@@ -28,3 +28,6 @@
 
 # Ignore database
 /config/database.yml
+
+# Ignore rubocop config
+.rubocop.yml
