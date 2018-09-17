@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let(:question) { create(:question) }
-  let(:answer) { question.answers.new(body: 'Answer\'s body') }
+  let(:answer) { question.answers.new(body: "Answer's body") }
 
   describe 'GET #index' do
-    let(:answers) { question.answers.create(body: 'Answer\'s body') }
+    let(:answers) { question.answers.create(body: "Answer's body") }
 
     before { get :index, params: { question_id: question } }
 
@@ -34,7 +34,7 @@ RSpec.describe AnswersController, type: :controller do
   describe 'POST #create' do
     context 'with valid attributes' do
       it 'saves new Answer in the database' do
-        expect{ post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(Answer, :count).by(1)
+        expect{ post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
       end
 
       it 'redirect to "show" template' do
