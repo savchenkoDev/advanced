@@ -3,7 +3,7 @@ require 'rails_helper.rb'
 feature 'User sign in', %q{
   In order to able to ask question
   as an user
-  i want to bwe able to sign in
+  i want to be able to sign in
 } do
   given(:user) { create(:user) }
 

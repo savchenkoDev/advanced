@@ -3,13 +3,12 @@ require 'rails_helper.rb'
 feature 'Create question', %q{
   In order to get answer from community
   as an athenticated user
-  i want to bwe able to ask question
+  i want to be able to ask question
 } do
   given(:user) { create(:user) }
 
   scenario 'Authenticated user creates question' do
     sign_in(user)
-
     visit questions_path
     click_on 'Ask question'
 
