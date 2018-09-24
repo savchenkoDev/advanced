@@ -5,29 +5,29 @@ feature 'Delete answer', %q{
   as an user
   I should be its author
 } do
-
+  given!(:user) { create(:user) }
+  given!(:question) { user.questions.create!(title: 'Title Question', body: 'Question Body') }
+  given!(:answer) { question.answers.create!(body: 'Answer Body', user: user) }
+  
   scenario 'The author wants to delete the your answer' do
-    user = create(:user)
-    question = user.questions.create!(title: 'Title Question', body: 'Question Body')
     sign_in(user)
-    question.answers.create!(body: 'Question Body', user_id: user.id)
-    @count = question.answers.count
-    visit answer_path(question.answers.last)
-    click_on 'Delete'
-    expect(user.answers.count).to eq @count - 1
-    expect(current_path).to eq question_answers_path(question)
+    visit question_path(question)
+    click_on 'Delete answer'
+    
+    expect(page).to_not have_content answer.body
   end
 
-  scenario 'Non author wants to delete the your answer' do
-    user = create(:user)
-    question = user.questions.create!(title: 'Title Question', body: 'Question Body')
-    answer = question.answers.create!(body: 'Question Body', user_id: user.id)
-    @count = question.answers.count
-    user2 = create(:user)
-    sign_in(user2)
-    visit answer_path(answer)
-    click_on 'Delete'
-    expect(user.answers.count).to eq @count
-    expect(current_path).to eq question_answers_path(question)
+  scenario 'Non author wants to delete the answer' do
+    non_author = create(:user)
+    sign_in(non_author)
+    visit question_path(question)
+
+    expect(page).to_not have_content 'Delete answer'
+  end
+
+  scenario 'Un-authenticated user wants to delete the answer' do
+    visit question_path(question)
+
+    expect(page).to have_content 'You need to sign in or sign up before continuing.'
   end
 end

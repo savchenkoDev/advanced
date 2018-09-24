@@ -1,6 +1,5 @@
 class QuestionsController < ApplicationController
-  before_action :authenticate_user!, only: %i[new create]
-  before_action :find_user, only: %i[destroy]
+  before_action :authenticate_user!, only: %i[new create show]
   before_action :find_question, only: %i[show edit update destroy]
 
   def index
@@ -8,7 +7,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
-    @answer = @question.answers.new
+    @answer = Answer.new
   end
 
   def new
@@ -22,7 +21,7 @@ class QuestionsController < ApplicationController
     if @question.save
       redirect_to @question, notice: "Your question successfully created."
     else
-      render :new
+      render :new, notice: 'Your question was not created.'
     end
   end
 
@@ -35,17 +34,11 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
-
-    @question.destroy if @question.user == current_user
+    @question.destroy if current_user.author_of?(@question)
     redirect_to questions_path 
-    
   end
 
   private
-
-  def find_user
-    @user = current_user
-  end
 
   def find_question
     @question = Question.find(params[:id])

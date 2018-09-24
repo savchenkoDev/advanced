@@ -5,29 +5,25 @@ feature 'Delete question', %q{
   as an user
   I should be its author
 } do
+  given!(:user) { create(:user) }
+  given(:question) { user.questions.create!(title: 'Test Question', body: 'Question Body') }
   scenario 'The author wants to delete the your question' do
-    user = create(:user)
-    @count = user.questions.count
     sign_in(user)
-    question = user.questions.create!(title: 'Test Question', body: 'Question Body')
     visit question_path(question)
     click_on 'Delete'
-    expect(user.questions.count).to eq @count
+
+    expect(page).to_not have_content question.title
+    expect(page).to_not have_content question.body
     expect(current_path).to eq questions_path
   end
 
 
   scenario 'Not author wants to delete the question' do
-    users = create_list(:user, 2)
-    @count = users[0].questions.count
-
-    sign_in(users[0])
-    question = users[0].questions.create!(title: 'Test Question', body: 'Question Body')
-    click_on 'Log out'
-    sign_in(users[1])
+    non_author = create(:user)
+    sign_in(non_author)
     visit question_path(question)
-    click_on 'Delete'
-    expect(users[0].questions.count).to eq @count + 1
-    expect(current_path).to eq questions_path
+    
+    expect(page).to_not have_content 'Delete question'
+
   end
 end
