@@ -28,7 +28,6 @@ feature 'Create answer on question page', %q{
   scenario 'Authenticated user creates invalid answer' do
     sign_in(user)
     visit question_path(question)
-    fill_in 'Body', with: nil
     click_on 'Create answer'
 
     expect(page).to have_content "Body can't be blank"

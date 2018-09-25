@@ -1,9 +1,4 @@
--if !@answer.errors.empty?
-  p= pluralize(@answer.errors.count, "error")
-  ul 
-    -@answer.errors.full_messages.each do |message|
-      li= message
-
+= render 'shared/errors', resource: @answer
 = form_with(model: [@question, @answer], local: true) do |f|
   = f.label :body
   = f.text_area :body

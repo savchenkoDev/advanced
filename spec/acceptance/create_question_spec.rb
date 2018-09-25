@@ -32,9 +32,6 @@ feature 'Create question', %q{
     sign_in(user)
     visit questions_path
     click_on 'Ask question'
-
-    fill_in 'Title' , with: nil
-    fill_in 'Body' , with: nil
     click_on 'Create'
 
     expect(page).to have_content '4 errors'

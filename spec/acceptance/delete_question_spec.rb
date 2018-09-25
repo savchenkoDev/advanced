@@ -6,7 +6,8 @@ feature 'Delete question', %q{
   I should be its author
 } do
   given!(:user) { create(:user) }
-  given(:question) { user.questions.create!(title: 'Test Question', body: 'Question Body') }
+  given(:question) { create(:question, user: user) }
+  
   scenario 'The author wants to delete the your question' do
     sign_in(user)
     visit question_path(question)

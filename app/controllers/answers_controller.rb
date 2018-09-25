@@ -9,7 +9,6 @@ class AnswersController < ApplicationController
     if @answer.save
       redirect_to question_path(@answer.question), notice: 'Your answer successfully created.'
     else
-      @question.answers.delete(@answer)
       render 'questions/show', notice: 'Your answer was not created.'
     end
   end
