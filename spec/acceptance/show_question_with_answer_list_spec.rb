@@ -7,7 +7,7 @@ feature 'Show question with answers list', %q{
 } do
   given(:user) { create(:user)}
   given(:question) { create(:question) }
-  given!(:answers) { create_list(:answer, 2, question: question) }
+  given!(:answers) { create_list(:answer, 7, question: question) }
 
   scenario 'Autheticated user wants to see a question with answers list' do
     sign_in(user)
@@ -15,8 +15,8 @@ feature 'Show question with answers list', %q{
 
     expect(page).to have_content question.title
     expect(page).to have_content question.body
-    expect(page).to have_content answers[0].body
-    expect(page).to have_content answers[1].body
+
+    answers.count.times { |i| expect(page).to have_content answers[i].body }
   end
 
 end

@@ -5,13 +5,12 @@ feature 'Show questions list', %q{
   as an authenticated user, 
   I want to see a list of questions
 } do
-  given!(:questions) { create_list(:question, 2) }
+  given!(:questions) { create_list(:question, 7) }
 
   scenario 'User wants to see a list of questions' do
     visit questions_path
     
-    expect(page).to have_content questions[0].title
-    expect(page).to have_content questions[1].title
+    questions.count.times { |i| expect(page).to have_content questions[i].title }
   end
 
 end

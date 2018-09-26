@@ -1,6 +1,10 @@
 require 'rails_helper.rb'
 
 RSpec.describe User do
+  let!(:user) { create(:user) }
+  let!(:user_question) { create(:question, user: user) }
+  let!(:question) { create(:question) }
+
   it { should have_many(:questions).dependent(:destroy) }
   it { should have_many(:answers) }
   
@@ -8,14 +12,10 @@ RSpec.describe User do
   it { should validate_presence_of :password }
 
   it 'is author of entity' do
-    user = create(:user)
-    question = create(:question, user: user)
-    expect(user.author_of?(question)).to be true
+    expect(user).to be_author_of(user_question)
   end
 
   it 'is not author of entity' do
-    user = create(:user)
-    question = create(:question)
-    expect(user.author_of?(question)).to be false
+    expect(user).to_not be_author_of(question)
   end
 end
