@@ -1,11 +1,17 @@
 FactoryBot.define do
-  factory :answer do
-    question_id { 1 }
-    body { "MyText" }
+  sequence :body do |n|
+    "Answer#{n}"
   end
 
+  factory :answer do
+    user
+    question
+    body
+  end
+  
   factory :invalid_answer, class: Answer do
-    question_id nil
-    body nil
+    user
+    question
+    body { nil }
   end
 end

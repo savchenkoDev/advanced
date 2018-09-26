@@ -1,0 +1,6 @@
+-if resource.present? && resource.errors.any?
+  p= pluralize(resource.errors.count, "error")
+  ul 
+    -resource.errors.full_messages.each do |message|
+      li= message
+
