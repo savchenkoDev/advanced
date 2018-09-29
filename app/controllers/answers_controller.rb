@@ -3,14 +3,12 @@ class AnswersController < ApplicationController
   before_action :find_question, only: %i[index new create]
   before_action :find_answer, only: %i[show destroy]
 
+  layout false, expect: :create
+
   def create
     @answer = @question.answers.new(answer_params)
     @answer.user = current_user
-    if @answer.save
-      redirect_to question_path(@answer.question), notice: 'Your answer successfully created.'
-    else
-      render 'questions/show', notice: 'Your answer was not created.'
-    end
+    @answer.save
   end
 
   def destroy
@@ -29,6 +27,6 @@ class AnswersController < ApplicationController
   end
 
   def answer_params
-    params.require(:answer).permit(:body)
+    params.require(:answer).permit(:body, :user)
   end
 end
