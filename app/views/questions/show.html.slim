@@ -7,5 +7,6 @@ h2 = @question.body
 
 h3 All answers
 
-= render @question.answers
+div.answers
+  = render @question.answers
 = render 'answers/form'

@@ -1,35 +1,38 @@
 require 'rails_helper.rb'
 
-feature 'Create answer on question page', %q{
-  To answer the question
-  as an authenticated user,
-  I want to see the form on the question page
-} do 
+feature 'User creates an answer', %q{
+  In order to exchange my knowledge
+  As an authenticated user
+  I want to be able to create answer
+} do
   given(:user) { create(:user) }
-  let(:question) { create(:question) }
+  given(:question) { create(:question) }
 
-  scenario 'Authenticated user creates an valid answer' do
+  scenario 'Authenticated user creates an valid answer', js: true do
     body = 'Test Answer Body'
     sign_in(user)
     visit question_path(question)
-    fill_in 'Body' , with: body
-    click_on 'Create answer'
-
-    expect(page).to have_content 'Your answer successfully created.'
-    expect(page).to have_content body
+    fill_in 'Your answer', with: body
+    click_on "Create answer"
+    
+    expect(current_path).to eq question_path(question)
+    within '.answers' do
+      expect(page).to have_content body
+    end
   end
 
-  scenario 'Un-authenticated user creates answer' do
-    visit question_path(question)
-
-    expect(page).to have_content 'You need to sign in or sign up before continuing.'
-  end
-
-  scenario 'Authenticated user creates invalid answer' do
+  scenario 'Authenticated user create invalid answer', js: true do
     sign_in(user)
     visit question_path(question)
-    click_on 'Create answer'
+    click_on "Create answer"
+    
+    expect(current_path).to eq question_path(question)
+    expect(page).to_not have_content "My Answer body"
+  end
 
-    expect(page).to have_content "Body can't be blank"
+  scenario 'Un-authenticated user create answer', js: true do
+    visit question_path(question)
+    
+    expect(page).to have_content "You need to sign in or sign up before continuing."
   end
 end
