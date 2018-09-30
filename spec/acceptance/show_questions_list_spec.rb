@@ -1,4 +1,4 @@
-require 'rails_helper.rb'
+require_relative 'acceptance_helper'
 
 feature 'Show questions list', %q{
   In order to select a question

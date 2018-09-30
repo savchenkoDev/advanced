@@ -1,4 +1,4 @@
-require 'rails_helper.rb'
+require_relative 'acceptance_helper'
 
 feature 'Sign Up New User', %q{
   In order to be able to authorize in the application

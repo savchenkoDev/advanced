@@ -1,4 +1,4 @@
-require 'rails_helper.rb'
+require_relative 'acceptance_helper'
 
 feature 'User creates an answer', %q{
   In order to exchange my knowledge

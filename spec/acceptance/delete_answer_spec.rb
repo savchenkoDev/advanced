@@ -1,4 +1,4 @@
-require 'rails_helper.rb'
+require_relative 'acceptance_helper'
 
 feature 'Delete answer', %q{
   In order to delete a question

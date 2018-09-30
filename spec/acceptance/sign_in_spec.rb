@@ -1,4 +1,4 @@
-require 'rails_helper.rb'
+require_relative 'acceptance_helper'
 
 feature 'User sign in', %q{
   In order to able to ask question
