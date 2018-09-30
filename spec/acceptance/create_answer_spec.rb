@@ -1,6 +1,6 @@
 require 'rails_helper.rb'
 
-feature 'User answer AJAX', %q{
+feature 'User creates an answer', %q{
   In order to exchange my knowledge
   As an authenticated user
   I want to be able to create answer
