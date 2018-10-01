@@ -1,12 +1,16 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!, only: %i[new create]
   before_action :find_question, only: %i[index new create]
-  before_action :find_answer, only: %i[show destroy]
+  before_action :find_answer, only: %i[update destroy]
 
   def create
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     @answer.save
+  end
+
+  def update
+    @answer.update!(answer_params)
   end
 
   def destroy
@@ -21,7 +25,7 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
-    @answer = Answer.find(params[:id])
+    @answer = Answer.find(params[:id]) || Answer.new
   end
 
   def answer_params

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let!(:user) { create(:user) }
-  let(:question) { create(:question) }
+  let!(:question) { create(:question) }
   let(:answer) { create(:answer) }
 
   before { sign_in(user) }
@@ -60,6 +60,27 @@ RSpec.describe AnswersController, type: :controller do
       it 'redirect to question/show view' do
         delete :destroy, params: { id: answer }
         expect(response).to redirect_to question_path(question)
+      end
+    end
+  end
+
+  describe 'PATCH #update' do
+    let(:answer) { create(:answer, question: question) }
+    context 'with valid attributes' do
+      it 'assigns the requested answer to @answer' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        patch :update, params: { id: answer, question_id: question, answer: { body: 'new_body' } }, format: :js
+        answer.reload
+        expect(answer.body).to eq 'new_body'
+      end
+
+      it 'render "update" template' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :update
       end
     end
   end
