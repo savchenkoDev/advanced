@@ -4,7 +4,7 @@ class AnswersController < ApplicationController
   before_action :find_answer, only: %i[show destroy]
 
   def create
-    @answer = @question.answers.new(answer_params)
+    @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     @answer.save
   end

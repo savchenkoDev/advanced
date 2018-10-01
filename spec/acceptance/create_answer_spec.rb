@@ -21,13 +21,13 @@ feature 'User creates an answer', %q{
     end
   end
 
-  scenario 'Authenticated user create invalid answer', js: true do
+  scenario 'User try to create invalid answer', js: true do
     sign_in(user)
     visit question_path(question)
     click_on "Create answer"
     
     expect(current_path).to eq question_path(question)
-    expect(page).to_not have_content "My Answer body"
+    expect(page).to have_content "Body can't be blank"
   end
 
   scenario 'Un-authenticated user create answer', js: true do
