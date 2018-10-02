@@ -1,0 +1,19 @@
+div.question  
+  h3.title = @question.title
+  p.body = @question.body
+  -if current_user.author_of?(@question)
+    p= link_to 'Delete question', question_path(@question),
+            method: :delete, class: 'btn btn-secondary'
+    p= link_to  "Edit question", '', class: 'edit-question-link'
+  div.question_errors
+  div.edit_question
+    =form_with model: @question, remote: true do |f|
+      = f.label :title, 'New title'
+      br
+      = f.text_field :title
+      br
+      = f.label :body, 'New body'
+      br
+      = f.text_area :body
+      br
+      = f.submit 'Save'
