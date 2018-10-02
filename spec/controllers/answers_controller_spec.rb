@@ -40,12 +40,12 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'for author' do
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to change(user.answers, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(user.answers, :count).by(-1)
       end
 
-      it 'redirect to question/show view' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+      it 'render to "destoy" view' do
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
 
@@ -54,12 +54,12 @@ RSpec.describe AnswersController, type: :controller do
 
       before { sign_in(non_author) }
       it 'deletes the answer' do
-        expect { delete :destroy, params: { id: answer } }.to_not change(user.answers, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(user.answers, :count)
       end
 
       it 'redirect to question/show view' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template :destroy
       end
     end
   end

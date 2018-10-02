@@ -9,12 +9,12 @@ feature 'Delete answer', %q{
   given!(:question) { create(:question, user: user) }
   given!(:answer) { create(:answer, question: question, user: user) }
 
-  scenario 'The author wants to delete the your answer' do
+  scenario 'The author wants to delete the your answer', js: true do
     sign_in(user)
     visit question_path(question)
     expect(page).to have_content answer.body
     click_on 'Delete answer'
-    
+
     expect(page).to_not have_content answer.body
   end
 
