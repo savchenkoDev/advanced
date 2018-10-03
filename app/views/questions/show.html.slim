@@ -2,6 +2,6 @@
 
 h4 All answers
 div.answers
-  = render @question.answers
+  = render @question.answers.order(best: :desc)
 div.errors
 = render 'answers/form'

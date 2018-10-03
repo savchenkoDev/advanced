@@ -4,7 +4,6 @@
 $ -> 
   $('.edit-answer-link').click (e) -> 
     e.preventDefault();
-    $('.edit_answer').show();
     $(this).hide();
     answer_id = $(this).data('answerId');
     $('form#edit-answer-' + answer_id).show();
