@@ -1,7 +1,7 @@
 = render @question
 
 h4 All answers
-div.answers
-  = render @question.answers.order(best: :desc)
-div.errors
+.answers
+  = render @question.answers.by_best
+.errors
 = render 'answers/form'

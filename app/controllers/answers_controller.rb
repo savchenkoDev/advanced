@@ -19,8 +19,7 @@ class AnswersController < ApplicationController
 
   def set_best
     @question = @answer.question
-    @question.answers.each { |answer| answer.update(best: false) }
-    @answer.update(best: true)
+    @answer.set_best
   end
 
   private

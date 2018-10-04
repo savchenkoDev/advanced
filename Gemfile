@@ -63,7 +63,8 @@ group :test, :development do
   gem 'rspec-rails'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing', '~> 1.0', '>= 1.0.2'
-  gem 'capybara-webkit'
+  gem 'selenium-webdriver'
+  gem 'geckodriver-helper', '~> 0.21.0'
   gem 'database_cleaner', '~> 1.7'
 end
 
