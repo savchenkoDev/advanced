@@ -84,4 +84,23 @@ RSpec.describe AnswersController, type: :controller do
       end
     end
   end
+
+  describe 'PATCH #set_best' do
+    let(:answer) { create(:answer) }
+    it 'assigns the requested answer to @answer' do
+      patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'changes answer attributes' do
+      patch :update, params: { id: answer, question_id: question, answer: { body: 'new_body' } }, format: :js
+      answer.set_best
+      expect(answer.best).to eq true
+    end
+
+    it 'render template "set_best"' do
+      patch :set_best, params: { id: answer}, format: :js
+      expect(response).to render_template :set_best
+    end
+  end
 end
