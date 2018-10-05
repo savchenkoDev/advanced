@@ -10,7 +10,7 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update!(answer_params)
+    @answer.update!(answer_params) if current_user.author_of?(@answer)
   end
 
   def destroy
@@ -19,7 +19,7 @@ class AnswersController < ApplicationController
 
   def set_best
     @question = @answer.question
-    @answer.set_best
+    @answer.set_best if current_user.author_of?(@question)
   end
 
   private

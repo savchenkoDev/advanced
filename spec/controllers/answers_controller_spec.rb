@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnswersController, type: :controller do
   let!(:user) { create(:user) }
+  let(:non_author) { create(:user) }
   let!(:question) { create(:question) }
   let(:answer) { create(:answer) }
 
@@ -50,9 +51,8 @@ RSpec.describe AnswersController, type: :controller do
     end
 
     context 'for non-author' do
-      let(:non_author) { create(:user) }
-
       before { sign_in(non_author) }
+
       it 'deletes the answer' do
         expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(user.answers, :count)
       end
@@ -65,8 +65,9 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    let(:answer) { create(:answer, question: question) }
-    context 'with valid attributes' do
+    let(:answer) { create(:answer, question: question, user: user) }
+
+    context 'author of answer' do
       it 'assigns the requested answer to @answer' do
         patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
         expect(assigns(:answer)).to eq answer
@@ -83,24 +84,63 @@ RSpec.describe AnswersController, type: :controller do
         expect(response).to render_template :update
       end
     end
+
+    context 'Not author of answer' do
+      before { sign_in(non_author) }
+      
+      it 'assigns the requested answer to @answer' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'not changes answer attributes' do
+        patch :update, params: { id: answer, question_id: question, answer: { body: 'new_body' } }, format: :js
+        answer.reload
+        expect(answer.body).to_not eq 'new_body'
+      end
+
+      it 'render "update" template' do
+        patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
+        expect(response).to render_template :update
+      end
+    end
   end
 
   describe 'PATCH #set_best' do
-    let(:answer) { create(:answer) }
-    it 'assigns the requested answer to @answer' do
-      patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
-      expect(assigns(:answer)).to eq answer
+    let(:answer) { create(:answer, question: question, user: user) }
+
+    context 'user is author of question' do
+      it 'assigns the requested answer to @answer' do
+        patch :set_best, params: { id: answer }, format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        expect{ patch :set_best, params: { id: answer }, format: :js }.to_not change(answer, :best)
+      end
+
+      it 'render template "set_best"' do
+        patch :set_best, params: { id: answer }, format: :js
+        expect(response).to render_template :set_best
+      end
     end
 
-    it 'changes answer attributes' do
-      patch :update, params: { id: answer, question_id: question, answer: { body: 'new_body' } }, format: :js
-      answer.set_best
-      expect(answer.best).to eq true
-    end
+    context 'user is not author of question' do
+      before {sign_in(non_author)}
 
-    it 'render template "set_best"' do
-      patch :set_best, params: { id: answer}, format: :js
-      expect(response).to render_template :set_best
+      it 'assigns the requested answer to @answer' do
+        patch :set_best, params: { id: answer }, format: :js
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it "can't changes answer attributes" do
+        expect{ patch :set_best, params: { id: answer }, format: :js }.to_not change(answer, :best)
+      end
+      
+      it 'render template "set_best"' do
+        patch :set_best, params: { id: answer }, format: :js
+        expect(response).to render_template :set_best
+      end
     end
   end
 end

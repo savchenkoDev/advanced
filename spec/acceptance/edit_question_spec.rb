@@ -3,7 +3,7 @@ require_relative 'acceptance_helper'
 feature 'Question editing', %q{
   In order to fix mistake
   As an author of question
-  I'd like to be able to edit my question
+  Id like to be able to edit my question
 } do
   given(:user) { create(:user) }
   given(:user2) { create(:user) }
@@ -14,7 +14,7 @@ feature 'Question editing', %q{
     expect(page).to_not have_link 'Edit question'
   end
 
-  describe "Authenticated user" do
+  describe "User as an author" do
     before do
       sign_in(user)
       visit question_path(question)
