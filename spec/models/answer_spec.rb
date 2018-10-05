@@ -19,7 +19,7 @@ RSpec.describe Answer, type: :model do
     end
 
     it 'set answer by best' do
-      expect(answers.first.best).to be true
+      expect(answers.first.best).to be_best
     end
 
     it 'set only one best answer' do
