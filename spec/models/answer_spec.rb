@@ -13,7 +13,10 @@ RSpec.describe Answer, type: :model do
   it { should validate_length_of(:body).is_at_least(6) }
 
   describe 'method "set_best":' do
-    before { answers.first.set_best }
+    before do 
+      answers.last.set_best
+      answers.first.set_best
+    end
 
     it 'set answer by best' do
       expect(answers.first.best).to be true
