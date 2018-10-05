@@ -1,12 +1,7 @@
-h2 = @question.title
+= render @question
 
-h2 = @question.body
--if current_user.author_of?(@question)
-  p= link_to 'Delete question', question_path(@question),
-           method: :delete, class: 'btn btn-secondary'
-
-h3 All answers
-
-div.answers
-  = render @question.answers
+h4 All answers
+.answers
+  = render @question.answers.by_best
+.errors
 = render 'answers/form'

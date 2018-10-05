@@ -3,4 +3,13 @@ class Answer < ApplicationRecord
   belongs_to :user
 
   validates :body, presence: true, length: { minimum: 6 }
+
+  scope :by_best, -> { order(best: :desc) }
+
+  def set_best
+    transaction do 
+      question.answers.update_all(best: false)
+      update!(best: true)
+    end  
+  end
 end
