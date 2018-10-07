@@ -1,4 +1,5 @@
 class FileUploader < CarrierWave::Uploader::Base
+  delegate :name, to: :file
   storage :file
 
   def store_dir
