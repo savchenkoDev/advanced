@@ -8,10 +8,8 @@
   br
   .attachments
     p Attachments:
-    div
-      = f.fields_for :attachments do |a|
-        = a.label :file
-        = a.file_field :file
+    p
+      =render 'shared/nested_form', form: f
 
   = f.submit 'Create'
   br
