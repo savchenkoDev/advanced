@@ -39,6 +39,7 @@ gem 'devise', '~> 4.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'carrierwave'
 gem 'remotipart'
+gem 'cocoon'
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
