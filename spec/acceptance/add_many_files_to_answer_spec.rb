@@ -16,9 +16,19 @@ feature 'Add many files to answer', %q{
   scenario 'User adds file to answer', js: true do
     fill_in 'Your answer' , with: 'Answer body'
     attach_file 'File', "#{Rails.root}/.ruby-version"
+    click_on 'Add file'
+    all('input[type="file"]')[1].set "#{Rails.root}/.ruby-gemset"
     click_on 'Create answer'
-    expect(page).to have_link '.ruby-version', href: '/uploads/attachment/file/1/.ruby-version'
-      save_and_open_page
 
+    within '.answer' do
+      expect(page).to have_link '.ruby-version', href: /(\/uploads\/attachment\/file\/)(\d+)(\/.ruby-version)/
+      expect(page).to have_link '.ruby-gemset', href: /(\/uploads\/attachment\/file\/)(\d+)(\/.ruby-gemset)/
+    end
+  end
+
+  scenario 'user can remove files', js: true do
+    fill_in 'Your answer' , with: 'Answer body'
+    click_on 'remove'
+    expect(page).to_not have_content find('input[type="file"]')
   end
 end

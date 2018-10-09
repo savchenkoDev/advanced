@@ -12,11 +12,21 @@ feature 'Add files to question', %q{
     visit new_question_path()
   end
 
-  scenario 'User adds file when asks question' do
+  scenario 'User adds file to answer', js: true do
     fill_in 'Title' , with: 'Test Question'
     fill_in 'Body' , with: 'Test Body'
-    attach_file 'File', "#{Rails.root}/spec/spec_helper.rb"    
+    attach_file 'File', "#{Rails.root}/.ruby-version"
+    click_on 'Add file'
+    all('input[type="file"]').last.set "#{Rails.root}/.ruby-gemset"
     click_on 'Create'
-    expect(page).to have_link 'spec_helper.rb', href: '/uploads/attachment/file/1/spec_helper.rb'
+    expect(page).to have_link '.ruby-version', href: /(\/uploads\/attachment\/file\/)(\d+)(\/.ruby-version)/
+    expect(page).to have_link '.ruby-gemset', href: /(\/uploads\/attachment\/file\/)(\d+)(\/.ruby-gemset)/
+  end
+
+  scenario 'user can remove files', js: true do
+    fill_in 'Title' , with: 'Test Question'
+    fill_in 'Body' , with: 'Test Body'
+    click_on 'remove'
+    expect(page).to_not have_content find('input[type="file"]')
   end
 end
