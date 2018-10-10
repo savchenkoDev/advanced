@@ -1,7 +1,15 @@
 = render 'shared/errors', resource: @question
-= form_for @question do |f| 
+= form_with model: @question do |f| 
   = f.label :title
   = f.text_field :title
+  br
   = f.label :body
   = f.text_area :body
+  br
+  .attachments
+    p Attachments:
+    p
+      =render 'shared/nested_form', form: f
+
   = f.submit 'Create'
+  br
