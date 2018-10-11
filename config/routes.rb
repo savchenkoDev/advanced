@@ -3,10 +3,18 @@ Rails.application.routes.draw do
 
   root to: "questions#index"
   
-  resources :questions do
+  concern :votable do
+    patch :like, to: 'votes#like'
+    patch :dislike, to: 'votes#dislike'
+    resources :votes, only: :destroy, shallow: true
+  end
+
+  concern :attachable do
     resources :attachments, shallow: true, only: %i[destroy]
-    resources :answers, shallow: true, only: %i[create destroy update] do
-      resources :attachments, shallow: true, only: %i[destroy]
+  end
+  
+  resources :questions, concerns: %i[votable attachable] do
+    resources :answers, shallow: true, only: %i[create destroy update], concerns: :attachable do
       patch :set_best, on: :member
     end
   end
