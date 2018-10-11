@@ -1,6 +1,7 @@
 class Question < ApplicationRecord
   has_many :answers, dependent: :destroy
   has_many :attachments, as: :attachable
+  has_many :votes, as: :votable
   belongs_to :user
 
   validates :title, :body, presence: true, length: { minimum: 6 }
