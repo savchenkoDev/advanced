@@ -1,0 +1,12 @@
+div class="#{resource_name(resource)}-rating"
+  div class="#{resource_name(resource)}-#{resource.id}-rating" = "Rating: #{resource.rating}"
+  div class="#{resource_name(resource)}-#{resource.id}-rating-buttons"
+    -if current_user.voted?(resource)
+      p= link_to "Delete vote", polymorphic_path(resource, action: :destroy_vote),
+              method: :delete, remote: true, data: {type: :json}
+    -elsif !current_user.author_of?(resource)
+      p= link_to 'Like', polymorphic_path(resource, action: :like),
+              method: :patch, remote: true, data: { type: :json }
+      p= link_to  "Dislike", polymorphic_path(resource, action: :dislike),
+              method: :patch, remote: true, data: { type: :json }
+  
