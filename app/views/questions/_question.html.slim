@@ -10,12 +10,7 @@
           br
           -if current_user.author_of?(@question)
             = link_to  "delete", attachment_path(attachment), method: :delete, remote: true
-  -if current_user.voted?(@question)
-    = link_to  "Delete vote", vote_path(current_user.vote(@question)), method: :delete, remote: true, data: {type: :json}
-  -elsif !current_user.author_of?(@question)
-    = link_to  "Like", question_like_path(@question), method: :patch, remote: true, data: {type: :json}
-    br
-    = link_to  "Dislike", question_dislike_path(@question), method: :patch, remote: true, data: {type: :json}
+  = render 'shared/votes', resource: @question
   -if current_user.author_of?(@question)
     p= link_to 'Delete question', question_path(@question),
             method: :delete, class: 'btn btn-secondary'
