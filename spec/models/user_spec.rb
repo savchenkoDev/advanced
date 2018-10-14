@@ -13,7 +13,7 @@ RSpec.describe User do
   it { should validate_presence_of :email }
   it { should validate_presence_of :password }
 
-  describe 'Method "author_of?"' do
+  describe '#author_of?' do
     it 'is author of entity' do
       expect(user).to be_author_of(user_question)
     end
@@ -23,7 +23,7 @@ RSpec.describe User do
     end    
   end
   
-  describe 'Method "voted?"' do
+  describe '#voted?' do
     it 'have a vote for entity' do
       expect(user).to be_voted(question)
     end
@@ -33,7 +33,7 @@ RSpec.describe User do
     end
   end
 
-  describe 'Method "vote"' do
+  describe '#vote' do
     it 'find Vote instance' do
       expect(user.vote(question)).to be_a(Vote)
     end

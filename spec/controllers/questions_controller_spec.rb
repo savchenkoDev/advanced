@@ -12,7 +12,7 @@ RSpec.describe QuestionsController, type: :controller do
     let(:resource) { create(:question, user: author) }
     let(:vote) { create(:vote, votable: resource, user: author)}
 
-    it_behaves_like :voted
+    it_behaves_like 'voted'
   end
 
   describe 'GET #index' do

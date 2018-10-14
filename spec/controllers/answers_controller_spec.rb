@@ -14,7 +14,7 @@ RSpec.describe AnswersController, type: :controller do
     let(:resource) { create(:answer, user: author) }
     let(:vote) { create(:vote, votable: resource, user: author)}
 
-    it_behaves_like :voted
+    it_behaves_like 'voted'
   end
   
   describe 'POST #create' do

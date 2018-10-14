@@ -18,6 +18,6 @@ class User < ApplicationRecord
   
 
   def voted?(entity)
-    entity.votes.any? { |vote| vote.user_id == self.id }
+    entity.votes.where(user_id: self.id).exists?
   end
 end

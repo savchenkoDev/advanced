@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.shared_examples_for :voted do
+RSpec.shared_examples_for 'voted' do
   describe 'PATCH #like' do
     before { sign_in(user) }
 

@@ -7,48 +7,42 @@ module Voted
 
   def like
     if current_user.voted?(@votable)
-      respond_to do |format|
-        format.json { render json: @vote&.errors&.messages, status: :unprocessable_entity }
-      end
+      render json: @vote&.errors&.messages, status: :unprocessable_entity
     elsif !current_user.author_of?(@votable)
       new_vote(1)
-      respond_to do |format|
-        if @vote.save
-          format.json { render json: {id: @votable.id , rating: @votable.rating } }
-        else
-          format.json { render json: @vote&.errors&.messages, status: :unprocessable_entity }
-        end
+      if @vote.save
+        render json: {id: @votable.id , rating: @votable.rating } 
+      else
+        render json: @vote&.errors&.messages, status: :unprocessable_entity
       end
+    else
+      render json: @vote&.errors&.messages, status: :bad_request
     end
   end
 
   def dislike
     if current_user.voted?(@votable)
-      respond_to do |format|
-        format.json { render json: @vote&.errors&.messages, status: :unprocessable_entity }
-      end
+      render json: @vote&.errors&.messages, status: :unprocessable_entity
     elsif !current_user.author_of?(@votable)
       new_vote(-1)
-
-      respond_to do |format|
-        if @vote.save
-          format.json { render json: {id: @votable.id , rating: @votable.rating } }
-        else
-          format.json { render json: @vote&.errors&.messages, status: :unprocessable_entity }
-        end
+      if @vote.save
+        render json: {id: @votable.id , rating: @votable.rating }
+      else
+        render json: @vote&.errors&.messages, status: :unprocessable_entity
       end
+    else
+      render json: @vote&.errors&.messages, status: :bad_request
     end
+
   end
 
   def destroy_vote
     @vote = @votable.votes.find_by(user: current_user)
-    respond_to do |format|
-      if @vote
-        @vote.destroy
-        format.json { render json: {id: @votable.id , rating: @votable.rating, type: action_name } }
-      else
-        format.json { render json: @vote&.errors&.messages, status: :not_found }
-      end
+    if @vote
+      @vote.destroy
+      render json: {id: @votable.id , rating: @votable.rating, type: action_name }
+    else
+      render json: @vote&.errors&.messages, status: :not_found
     end
   end
 

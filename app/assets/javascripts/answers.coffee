@@ -9,13 +9,11 @@ $ ->
     $('form#edit-answer-' + answer_id).show();
 
   $('.answer-rating').bind 'ajax:success', (e) ->
-    rating = ".answer-"+e.detail[0].id+"-rating"
     $(".answer-"+e.detail[0].id+"-rating").html('Rating: ' + e.detail[0].rating)
-    buttons = ".answer-"+e.detail[0].id+"-rating-buttons"
     if e.detail[0].type != 'destroy_vote'
-      $(".answer-"+e.detail[0].id+"-rating-buttons").html('<p><a data-type="json" data-remote="true" rel="nofollow" data-method="delete" href="/answers/'+e.detail[0].id+'/destroy_vote">Delete vote</a></p>')
+      $(".answer-"+e.detail[0].id+"-rating-buttons").html('<p><a data-type="json" data-remote="true" rel="nofollow" data-method="delete" href="/answers/' + e.detail[0].id + '/destroy_vote">Delete vote</a></p>')
     else 
-      $(".answer-"+e.detail[0].id+"-rating-buttons").html(
-        '<p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/answers/'+e.detail[0].id+'/like">Like</a></p>
-        <p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/answers/'+e.detail[0].id+'/dislike">Dislike</a></p>
+      $(".answer-" + e.detail[0].id + "-rating-buttons").html(
+        '<p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/answers/' + e.detail[0].id + '/like">Like</a></p>
+        <p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/answers/' + e.detail[0].id + '/dislike">Dislike</a></p>
       ')
