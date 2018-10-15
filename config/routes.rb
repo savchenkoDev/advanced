@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   devise_for :users
 
   root to: "questions#index"
+
+  mount ActionCable.server => '/cable'
   
   concern :votable do
     member do
