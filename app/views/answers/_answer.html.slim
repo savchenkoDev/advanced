@@ -11,6 +11,7 @@
               br
               -if current_user.author_of?(answer)
                 = link_to  "delete", attachment_path(attachment), method: :delete, remote: true
+    = render 'shared/votes', resource: answer
     -if current_user.author_of?(answer.question)
       p= link_to "Choose the best", set_best_answer_path(answer), method: :patch, remote: true
     -if current_user&.author_of?(answer)

@@ -10,6 +10,7 @@
           br
           -if current_user.author_of?(@question)
             = link_to  "delete", attachment_path(attachment), method: :delete, remote: true
+  = render 'shared/votes', resource: @question
   -if current_user.author_of?(@question)
     p= link_to 'Delete question', question_path(@question),
             method: :delete, class: 'btn btn-secondary'

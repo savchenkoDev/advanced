@@ -6,6 +6,15 @@ RSpec.describe QuestionsController, type: :controller do
 
   before { sign_in(user) }
 
+  describe 'for vote actions' do
+    let(:author) { create(:user) }
+    let(:user) { create(:user) }
+    let(:resource) { create(:question, user: author) }
+    let(:vote) { create(:vote, votable: resource, user: author)}
+
+    it_behaves_like 'voted'
+  end
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
 

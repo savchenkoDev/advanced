@@ -1,11 +1,11 @@
 class Answer < ApplicationRecord
-  has_many :attachments , as: :attachable
+  include Votable
+  include Attachable
+  
   belongs_to :question
   belongs_to :user
 
   validates :body, presence: true, length: { minimum: 6 }
-
-  accepts_nested_attributes_for :attachments, allow_destroy: true, reject_if: :all_blank
 
   scope :by_best, -> { order(best: :desc) }
 
