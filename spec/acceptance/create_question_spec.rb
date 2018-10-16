@@ -38,4 +38,29 @@ feature 'Create question', %q{
     expect(page).to have_content "Title can't be blank"
   end
 
+  context 'multiple sessions' do
+    scenario "question appears on another user's page" do
+      Capybara.using_session('guest') do
+        visit questions_path
+      end
+
+      Capybara.using_session('user') do
+        sign_in(user)
+        visit questions_path
+        click_on 'Ask question'
+
+        fill_in 'Title' , with: 'Test Question'
+        fill_in 'Body' , with: 'Test Body'
+        click_on 'Create'
+                visit questions_path
+
+        expect(page).to have_content 'Test Question'
+      end
+
+      Capybara.using_session('guest') do
+        save_and_open_page
+        expect(page).to have_content 'Test Question'
+      end
+    end
+  end
 end
