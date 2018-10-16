@@ -1,9 +1,11 @@
 class AnswersController < ApplicationController
   include Voted
+  include Commented
   
   before_action :authenticate_user!, only: %i[new create]
   before_action :find_question, only: %i[index new create]
   before_action :find_answer, only: %i[update destroy set_best]
+  after_action :publish_answer, only: %i[create]
 
   def create
     @answer = @question.answers.build(answer_params)
@@ -32,6 +34,12 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.find(params[:id]) || Answer.new
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast "answers-for-question-#{@answer.question_id}", 
+      ApplicationController.render_with_signed_in_user(current_user, 'answers/_answer', locals: { answer: @answer })
   end
 
   def answer_params

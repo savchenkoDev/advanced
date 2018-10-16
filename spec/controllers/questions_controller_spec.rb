@@ -15,6 +15,13 @@ RSpec.describe QuestionsController, type: :controller do
     it_behaves_like 'voted'
   end
 
+  describe 'for comment actions' do
+    let(:author) { create(:user) }
+    let(:resource) { create(:question, user: author) }
+
+    it_behaves_like 'commented', commentable: 'question'
+  end
+
   describe 'GET #index' do
     let(:questions) { create_list(:question, 2) }
 

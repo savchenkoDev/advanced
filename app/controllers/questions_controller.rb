@@ -1,8 +1,10 @@
 class QuestionsController < ApplicationController
   include Voted
+  include Commented
   
   before_action :authenticate_user!, only: %i[new create show]
-  before_action :find_question, only: %i[show edit update destroy]
+  before_action :find_question, only: %i[show edit update destroy comment]
+  after_action :publish_question, only: %i[create]
 
   def index
     @questions = Question.all
@@ -40,6 +42,13 @@ class QuestionsController < ApplicationController
 
   private
 
+  def publish_question
+    return if @question.errors.any?
+    ActionCable.server.broadcast 'questions', ApplicationController.render(
+      partial: 'questions/collection_item', locals: { question: @question }
+    )
+  end
+  
   def find_question
     @question = Question.find(params[:id])
   end
