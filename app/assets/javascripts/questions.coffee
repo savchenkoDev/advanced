@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
+  questionsList = $('.questions-list')
   $('.edit-question-link').click (e) ->
     console.log('event')
     e.preventDefault();
@@ -17,12 +18,28 @@ $ ->
         '<p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/questions/' + e.detail[0].id + '/like">Like</a></p>
         <p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/questions/' + e.detail[0].id + '/dislike">Dislike</a></p>
       ')
-  $('.question-comment-form').bind 'ajax:success', (e) ->
-    id= e.detail[0].id
-    text= e.detail[0].text
-    $('.question-comments-list').prepend('<li class=\"comment-' + id + '">' + text + '</li>')
+  App.cable.subscriptions.create('QuestionsChannel', {
+    connected: ->
+      @perform 'follow'
+    ,
+    received: (data) ->
+      questionsList.append data
+  })
+
+  App.cable.subscriptions.create('CommentsChannel', {
+    connected: ->
+      @perform 'followQuestion'
+    ,
+    received: (data) ->
+      
+  })
+
+  # $('.question-comment-form').bind 'ajax:success', (e) ->
+  #   id= e.detail[0].id
+  #   text= e.detail[0].text
+  #   $('.question-comments-list').prepend('<li class=\"comment-' + id + '">' + text + '</li>')
   
-  $('.question-comment-form').bind 'ajax:error', (e) ->
-    errors = e.detail[0]
-    $('.comment-errors').html(errors)
+  # $('.question-comment-form').bind 'ajax:error', (e) ->
+  #   errors = e.detail[0]
+  #   $('.comment-errors').html(errors)
     

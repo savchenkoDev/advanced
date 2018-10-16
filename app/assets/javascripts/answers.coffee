@@ -1,7 +1,9 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
-$ -> 
+$ ->
+  answersList = $('.answers')
+  questionId = $('.question').data('id')
   $('.edit-answer-link').click (e) -> 
     e.preventDefault();
     $(this).hide();
@@ -17,3 +19,11 @@ $ ->
         '<p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/answers/' + e.detail[0].id + '/like">Like</a></p>
         <p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/answers/' + e.detail[0].id + '/dislike">Dislike</a></p>
       ')
+
+  App.cable.subscriptions.create('AnswersChannel', {
+    connected: ->
+      @perform 'follow', { id: questionId }
+    ,
+    received: (data) ->
+      answersList.append data
+  })
