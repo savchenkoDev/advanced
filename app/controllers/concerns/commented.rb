@@ -11,7 +11,7 @@ module Commented
     if @comment.save
       render json: @comment
     else
-      render json: @comment&.errors&.messages, status: :unprocessable_entity
+      render json: @comment&.errors&.full_messages, status: :unprocessable_entity
     end
   end
   
