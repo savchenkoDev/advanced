@@ -17,3 +17,12 @@ $ ->
         '<p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/questions/' + e.detail[0].id + '/like">Like</a></p>
         <p><a data-type="json" data-remote="true" rel="nofollow" data-method="patch" href="/questions/' + e.detail[0].id + '/dislike">Dislike</a></p>
       ')
+  $('.question-comment-form').bind 'ajax:success', (e) ->
+    id= e.detail[0].id
+    text= e.detail[0].text
+    $('.question-comments-list').prepend('<li class=\"comment-' + id + '">' + text + '</li>')
+  
+  $('.question-comment-form').bind 'ajax:error', (e) ->
+    errors = e.detail[0]
+    $('.comment-errors').html(errors)
+    

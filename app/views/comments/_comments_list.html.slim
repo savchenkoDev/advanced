@@ -1,6 +1,6 @@
 .comments
   h3 Comments
-  ul.comments-list
-  - resource.comments.each do |comment|
-    = render "comments/comment", comment: comment
+  ul.question-comments-list
+    - resource.comments.each do |comment|
+      = render "comments/comment", comment: comment
   =render 'comments/comment_form', resource: resource
