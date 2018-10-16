@@ -16,6 +16,13 @@ RSpec.describe AnswersController, type: :controller do
 
     it_behaves_like 'voted'
   end
+
+  describe 'for comment actions' do
+    let(:author) { create(:user) }
+    let(:resource) { create(:answer, user: author) }
+
+    it_behaves_like 'commented', commentable: 'answer'
+  end
   
   describe 'POST #create' do
     context 'with valid attributes' do
