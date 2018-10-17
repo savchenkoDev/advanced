@@ -22,8 +22,19 @@ $ ->
 
   App.cable.subscriptions.create('AnswersChannel', {
     connected: ->
+      console.log('Answer connected!')
       @perform 'follow', { id: questionId }
     ,
     received: (data) ->
       answersList.append data
+  })
+  App.cable.subscriptions.create('CommentsChannel', {
+    connected: ->
+      console.log('Answer comments connected!')
+      @perform 'follow_answer'
+    ,
+    received: (data) ->
+      object = JSON.parse(data)
+      console.log(object.id)
+      $('.answer-' + object.id + '-comments-list').append('<li class="comment-'+object.comment.id+'">'+object.comment.text+'</li>')
   })
