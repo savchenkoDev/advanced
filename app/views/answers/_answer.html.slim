@@ -17,7 +17,9 @@
     -if current_user&.author_of?(answer)
       p= link_to 'Delete answer', answer_path(answer), method: :delete, remote: true
       p= link_to 'Edit answer', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-    = form_with model: answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit-form'} do |f|
-      = f.label :body, 'New answer'
-      = f.text_area :body
-      = f.submit 'Save'
+    .answer-form
+      = form_with model: answer, remote: true, html: { id: "edit-answer-#{answer.id}", class: 'edit-form'} do |f|
+        = f.label :body, 'New answer'
+        = f.text_area :body
+        = f.submit 'Save'
+    = render 'comments/comments_list', resource: answer
