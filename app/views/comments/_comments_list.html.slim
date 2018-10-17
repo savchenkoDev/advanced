@@ -1,6 +1,6 @@
 .comments
   h3 Comments
-  ul.question-comments-list
+  ul class="#{resource_name(resource)}-#{resource.id}-comments-list"
     - resource.comments.each do |comment|
       = render "comments/comment", comment: comment
   =render 'comments/comment_form', resource: resource
