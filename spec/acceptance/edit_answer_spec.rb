@@ -32,7 +32,9 @@ feature 'Answer editing', %q{
         click_on 'Save'
         expect(page).to_not have_content answer.body
         expect(page).to have_content "New answer body"
-        expect(page).to_not have_selector 'textarea'
+        within '.answer-form' do
+          expect(page).to_not have_selector 'textarea'
+        end
       end
     end
   end
