@@ -6,6 +6,7 @@ feature 'User creates an answer', %q{
   I want to be able to create answer
 } do
   given(:user) { create(:user) }
+  given(:user2) { create(:user) }
   given(:question) { create(:question) }
 
   scenario 'Authenticated user creates an valid answer', js: true do
@@ -37,24 +38,24 @@ feature 'User creates an answer', %q{
   end
 
   context 'multiple sessions' do
-    scenario "question appears on another user's page" do
-      Capybara.using_session('guest') do
-        visit questions_path
+    scenario "question appears on another user's page", js: true do
+      Capybara.using_session('user2') do
+        sign_in(user2)
+        visit question_path(question)
       end
 
       Capybara.using_session('user') do
         sign_in(user)
-        visit questions_path
-        click_on 'Ask question'
-
-        fill_in 'Body' , with: 'Answer Body'
-        click_on 'Create'
+        visit question_path(question)
+        
+        fill_in 'Your answer' , with: 'Answer Body'
+        click_on 'Create answer'
 
         expect(page).to have_content 'Answer Body'
       end
 
-      Capybara.using_session('guest') do
-        save_and_open_page
+      Capybara.using_session('user2') do
+
         expect(page).to have_content 'Answer Body'
       end
     end
