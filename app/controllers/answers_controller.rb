@@ -39,7 +39,7 @@ class AnswersController < ApplicationController
   def publish_answer
     return if @answer.errors.any?
     ActionCable.server.broadcast "answers-for-question-#{@answer.question_id}", 
-      ApplicationController.render_with_signed_in_user(current_user, 'answers/_answer', locals: { answer: @answer })
+      ApplicationController.render_with_signed_in_user(current_user, 'answers/_answer', locals: { answer: @answer }, layout: false)
   end
 
   def answer_params
