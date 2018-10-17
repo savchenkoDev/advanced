@@ -39,7 +39,7 @@ feature 'Create question', %q{
   end
 
   context 'multiple sessions' do
-    scenario "question appears on another user's page" do
+    scenario "question appears on another user's page", js: true do
       Capybara.using_session('guest') do
         visit questions_path
       end
@@ -52,13 +52,11 @@ feature 'Create question', %q{
         fill_in 'Title' , with: 'Test Question'
         fill_in 'Body' , with: 'Test Body'
         click_on 'Create'
-                visit questions_path
 
         expect(page).to have_content 'Test Question'
       end
 
       Capybara.using_session('guest') do
-        save_and_open_page
         expect(page).to have_content 'Test Question'
       end
     end
