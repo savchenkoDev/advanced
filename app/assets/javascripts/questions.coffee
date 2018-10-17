@@ -3,6 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 $ ->
   questionsList = $('.questions-list')
+  questionId = $('.question').data('id')
   $('.edit-question-link').click (e) ->
     console.log('event')
     e.preventDefault();
@@ -26,20 +27,12 @@ $ ->
       questionsList.append data
   })
 
+  questionId = $('.question').data('id')
   App.cable.subscriptions.create('CommentsChannel', {
     connected: ->
-      @perform 'followQuestion'
+      @perform 'follow_question'
     ,
     received: (data) ->
-      
+      object = JSON.parse(data)
+      $('.question-' + object.id + '-comments-list').append('<li class="comment-'+object.comment.id+'">'+object.comment.text+'</li>')
   })
-
-  # $('.question-comment-form').bind 'ajax:success', (e) ->
-  #   id= e.detail[0].id
-  #   text= e.detail[0].text
-  #   $('.question-comments-list').prepend('<li class=\"comment-' + id + '">' + text + '</li>')
-  
-  # $('.question-comment-form').bind 'ajax:error', (e) ->
-  #   errors = e.detail[0]
-  #   $('.comment-errors').html(errors)
-    
