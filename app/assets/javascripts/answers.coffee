@@ -31,7 +31,7 @@ $ ->
   App.cable.subscriptions.create('CommentsChannel', {
     connected: ->
       console.log('Answer comments connected!')
-      @perform 'follow_answer'
+      @perform 'follow_answer', {id: questionId}
     ,
     received: (data) ->
       object = JSON.parse(data)

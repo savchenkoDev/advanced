@@ -15,13 +15,24 @@ module Commented
       render json: { errors: @comment&.errors&.full_messages, id: @comment.commentable_id }, status: :unprocessable_entity
     end
   end
-
+  
+  private
+  
   def publish_comment
     return if @comment.errors.any?
-    ActionCable.server.broadcast "comments-for-#{@comment.commentable_type.underscore}",
+    set_id
+    ActionCable.server.broadcast "comments-for-#{@comment.commentable_type.underscore}-#{@id}",
       ApplicationController.render( json: { comment: @comment, id: @comment.commentable_id } )
-    end  
-  private
+  end
+
+  def set_id
+    if @comment.commentable_type == 'Question'
+      @id = @comment.commentable_id
+    else
+      answer = Answer.find(@comment.commentable_id)
+      @id = answer.question_id
+    end
+  end
   
   def find_commented
     @commented = model_klass.find(params[:id])
@@ -38,6 +49,5 @@ module Commented
   def commentable
     params[:commentable]
   end
-
 end 
   

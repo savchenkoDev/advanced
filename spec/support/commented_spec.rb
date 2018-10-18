@@ -18,6 +18,8 @@ RSpec.shared_examples_for 'commented' do
     end
   end
 
+  private
+
   def klass_name(object)
     object.class.name.underscore
   end
