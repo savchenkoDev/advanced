@@ -16,4 +16,5 @@
 //= require jquery.remotipart
 //= require activestorage
 //= require turbolinks
+//= require skim
 //= require_tree .
