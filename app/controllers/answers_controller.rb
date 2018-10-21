@@ -38,8 +38,14 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
+    Rails.logger.info(@answer.attachments.each {|a| a})
     ActionCable.server.broadcast "answers-for-question-#{@answer.question_id}", 
-      ApplicationController.render_with_signed_in_user(current_user, 'answers/_answer', locals: { answer: @answer }, layout: false)
+      ApplicationController.render(json: {
+        answer: @answer,
+        attachments:  @answer.attachments_attributes,
+        rating: @answer.rating,
+        question_author: @answer.question.user_id
+      })
   end
 
   def answer_params
