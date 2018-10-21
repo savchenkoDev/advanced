@@ -1,0 +1,48 @@
+div class="answer answer-#{@answer.id}"
+  p #{@answer.body}
+  -if @attachments.length > 0
+    p Attachments:
+    ul
+      -for @attachment in @attachments
+        li 
+          div [class="attachment-#{@attachment.id}"]
+            a [href="#{@attachment.url}"] #{@attachment.name}
+            br
+            -if @current_user == @answer.user_id
+              a [data-remote="true" data-method="patch", href="attachmennts/#{@attachment.id}"] delete
+  div class="answer-rating"
+  div class="answer-#{@answer.id}-rating" = "Rating: #{@rating}"
+  div class="answer-#{@answer.id}-rating-buttons"
+    -if @current_user != @answer.user_id
+      p
+        a [data-remote="true" data-method="patch" data-type="json" rel="nofollow" href="/answers/#{@answer.id}/like"] Like
+      p
+        a [data-remote="true" data-method="patch" data-type="json" rel="nofollow" href="/answers/#{@answer.id}/dislike"] Dislike
+  -if @current_user == @question_author
+    p
+      a [data-remote="true" data-method="patch" data-type="json" rel="nofollow" href="/answers/#{@answer.id}/set_best"] Choose the best
+  -if @current_user == @answer.user_id
+    p
+      a [data-remote="true" data-method="delete" data-type="json" rel="nofollow" href="/answers/#{@answer.id}"] Delete answer
+    p
+      / a [data-remote="true" data-method="patch" data-type="json" data-answer-id="#{@answer.id}" rel="nofollow" href="#"] Edit answer
+      a [class="edit-answer-link" data-answer-id="#{@answer.id}" href=""] Edit answer
+  .answer-form
+    form [id="edit-answer-#{@answer.id}" class="edit-form" action="/answers/#{@answer.id}" accept-charset="UTF-8" data-remote="true" method="post"]
+      input [name="utf8" type="hidden" value="✓"]
+      input [type="hidden" name="_method" value="patch"]
+      / <input type="hidden" name="authenticity_token" value="QDy2gHvEx7Y/V2iizBV6ZQkB5bD4qQEPIAXL+Icf0piNm5dY4PjXjTcCtiBBhhp3q1hazxLJ2L138/ZarzCYgw==">
+      label [for="answer_body"] New answer
+      textarea [name="answer[body]" id="answer_body"]
+      input [type="submit" name="commit" value="Save" data-disable-with="Save"]
+  .comments
+    h3 Comments
+    ul class="answer-#{@answer.id}-comments-list"
+    div class="answer-comment-form"
+      div class="answer-#{@answer.id}-comment-errors"
+      form [data-type="json" action="/answers/#{@answer.id}/create_comment" accept-charset="UTF-8" data-remote="true" method="post"]
+        input [name="utf8" type="hidden" value="✓"]
+        / input [type="hidden" name="authenticity_token" value="FVIXUMpPmmPHDTvA1mI7JrAL3WhT5BQJP/H5p0UPo23Y9TaIUXOKWM9Y5UJb8Vs0ElJiF7mEzbtoB8QFbSDpdg=="]
+        label [for="answer_text"] Text
+        textarea [name="answer[text]" id="answer_text"]
+        input [type="submit" name="commit" value="Save comment" data-disable-with="Save comment"]

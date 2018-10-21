@@ -4,7 +4,8 @@
 $ ->
   answersList = $('.answers')
   questionId = $('.question').data('id')
-  $('.edit-answer-link').click (e) -> 
+  userId = $('.question').data('user')
+  $('.edit-answer-link').click (e) ->
     e.preventDefault();
     $(this).hide();
     answer_id = $(this).data('answerId');
@@ -22,19 +23,23 @@ $ ->
 
   App.cable.subscriptions.create('AnswersChannel', {
     connected: ->
-      console.log('Answer connected!')
       @perform 'follow', { id: questionId }
     ,
     received: (data) ->
-      answersList.append data
+      response = JSON.parse(data)
+      answersList.append(JST['templates/answer']({
+        answer: response.answer,
+        attachments: response.attachments,
+        current_user: userId,
+        rating: response.rating,
+        question_author: response.question_author
+      }))
   })
   App.cable.subscriptions.create('CommentsChannel', {
     connected: ->
-      console.log('Answer comments connected!')
       @perform 'follow_answer', {id: questionId}
     ,
     received: (data) ->
       object = JSON.parse(data)
-      console.log(object.id)
       $('.answer-' + object.id + '-comments-list').append('<li class="comment-'+object.comment.id+'">'+object.comment.text+'</li>')
   })
