@@ -40,12 +40,12 @@ class AnswersController < ApplicationController
     return if @answer.errors.any?
     Rails.logger.info(@answer.attachments.each {|a| a})
     ActionCable.server.broadcast "answers-for-question-#{@answer.question_id}", 
-      ApplicationController.render(json: {
+      {
         answer: @answer,
         attachments:  @answer.attachments_attributes,
         rating: @answer.rating,
         question_author: @answer.question.user_id
-      })
+      }
   end
 
   def answer_params
