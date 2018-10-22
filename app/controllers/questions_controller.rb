@@ -4,40 +4,36 @@ class QuestionsController < ApplicationController
   
   before_action :authenticate_user!, only: %i[new create show]
   before_action :find_question, only: %i[show edit update destroy comment]
+  before_action :build_answer, only: :show
   after_action :publish_question, only: %i[create]
 
+  respond_to :js, only: :update
+
   def index
-    @questions = Question.all
+    respond_with(@questions = Question.all)
   end
 
   def show
-    @answer = @question.answers.build
-    @answer.attachments.build
+    respond_with @question
   end
 
   def new
-    @question = Question.new
-    @question.attachments.build
+    respond_with(@question = Question.new)
   end
 
   def edit; end
 
   def create
-    @question = current_user.questions.new(question_params)
-    if @question.save
-      redirect_to @question, notice: "Your question successfully created."
-    else
-      render :new, notice: 'Your question was not created.'
-    end
+    respond_with @question = current_user.questions.create(question_params)
   end
 
   def update
     @question.update(question_params) if current_user.author_of?(@question)
+    respond_with @question
   end
 
   def destroy
-    @question.destroy if current_user.author_of?(@question)
-    redirect_to questions_path 
+    respond_with @question.destroy if current_user.author_of?(@question)
   end
 
   private
@@ -56,4 +52,9 @@ class QuestionsController < ApplicationController
   def question_params
     params.require(:question).permit(:title, :body, attachments_attributes: [:file, :destroy])
   end
+
+  def build_answer
+    @answer = @question.answers.build
+  end
+  
 end

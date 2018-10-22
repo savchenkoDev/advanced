@@ -43,10 +43,6 @@ RSpec.describe QuestionsController, type: :controller do
       expect(assigns(:question)).to eq question
     end
 
-    it 'build a new Attachment for answer' do
-      expect(assigns(:answer).attachments.first).to be_a_new(Attachment)
-    end
-
     it 'render template "show"' do
       expect(response).to render_template :show
     end
@@ -54,10 +50,6 @@ RSpec.describe QuestionsController, type: :controller do
 
   describe 'GET #new' do
     before { get :new }
-
-    it 'build a new Attachment for question' do
-      expect(assigns(:question).attachments.first).to be_a_new(Attachment)
-    end
 
     it 'assigns a new Question to @question' do
       expect(assigns(:question)).to be_a_new(Question)
@@ -160,7 +152,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to index view' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+        expect(response).to have_http_status(204)
       end
     end
 
@@ -175,7 +167,7 @@ RSpec.describe QuestionsController, type: :controller do
 
       it 'redirect to index view' do
         delete :destroy, params: { id: question }
-        expect(response).to redirect_to questions_path
+        expect(response).to have_http_status(204)
       end
     end
   end
