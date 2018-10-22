@@ -19,8 +19,9 @@ gem 'rails-ujs', '~> 0.1.0'
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
 # Use Slim layoyts
-gem 'slim-rails', '~> 3.1', '>= 3.1.3'
 gem 'skim'
+gem 'slim-rails', '~> 3.1', '>= 3.1.3'
+gem 'responders', '~> 2.4'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
