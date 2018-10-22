@@ -17,8 +17,8 @@ feature 'Add comments to answer', %q{
     end
 
     scenario '- add comment with valid attributes', js: true do
-      within ".answer-comment-form" do
-        fill_in "Text",	with: 'Comment body' 
+      within '.answer-comment-form' do
+        fill_in 'Text',	with: 'Comment body' 
         click_on 'Save comment'
       end
 
@@ -32,9 +32,7 @@ feature 'Add comments to answer', %q{
         click_on 'Save comment'
       end
 
-      within ".answer-#{answer.id}-comments-list" do
-        expect(page).to_not have_content 'Comment body'
-      end
+      expect(page).to_not have_selector ".answer-#{answer.id}-comments-list"
     end
   end
 
