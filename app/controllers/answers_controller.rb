@@ -1,6 +1,8 @@
 class AnswersController < ApplicationController
   include Voted
   include Commented
+
+  respond_to :js, :json
   
   before_action :authenticate_user!, only: %i[new create]
   before_action :find_question, only: %i[index new create]
@@ -15,6 +17,7 @@ class AnswersController < ApplicationController
 
   def update
     @answer.update(answer_params) if current_user.author_of?(@answer)
+    respond_with @answer
   end
 
   def destroy
