@@ -7,11 +7,9 @@ module Attachable
   end
 
   def attachments_attributes
-    attrs = []
-    attachments.each do |attachment|
-      attrs << { id: attachment.id, name: attachment.file.filename, url: attachment.file.url }
+    attachments.map do |attachment|
+      attachment = { id: attachment.id, name: attachment.file.filename, url: attachment.file.url }
     end
-    attrs
   end
 end
 
