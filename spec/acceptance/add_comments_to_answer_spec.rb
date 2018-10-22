@@ -32,7 +32,9 @@ feature 'Add comments to answer', %q{
         click_on 'Save comment'
       end
 
-      expect(page).to_not have_selector ".answer-#{answer.id}-comments-list"
+      within ".answer-#{answer.id}-comments-list" do
+        expect(page).to_not have_selector "li"
+      end
     end
   end
 

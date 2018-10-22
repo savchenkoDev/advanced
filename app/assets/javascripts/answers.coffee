@@ -26,13 +26,12 @@ $ ->
       @perform 'follow', { id: questionId }
     ,
     received: (data) ->
-      response = JSON.parse(data)
       answersList.append(JST['templates/answer']({
-        answer: response.answer,
-        attachments: response.attachments,
+        answer: data.answer,
+        attachments: data.attachments,
         current_user: userId,
-        rating: response.rating,
-        question_author: response.question_author
+        rating: data.rating,
+        question_author: data.question_author
       }))
   })
   App.cable.subscriptions.create('CommentsChannel', {
