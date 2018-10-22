@@ -5,7 +5,7 @@
   br
   p Attachments
   p
-    = render 'shared/nested_form', form: f
+    = render 'shared/nested_form', form: f, resource: @answer
   = f.submit 'Create answer'
 
 

@@ -9,7 +9,7 @@
   .attachments
     p Attachments:
     p
-      =render 'shared/nested_form', form: f
+      =render 'shared/nested_form', form: f, resource: @question
 
   = f.submit 'Create'
   br
