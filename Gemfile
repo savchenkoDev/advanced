@@ -44,6 +44,7 @@ gem 'remotipart'
 gem 'cocoon'
 gem 'omniauth', '~> 1.8', '>= 1.8.1'
 gem 'omniauth-facebook', '~> 5.0'
+gem 'omniauth-vkontakte'
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
