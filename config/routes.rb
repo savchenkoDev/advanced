@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { omniauth_callbacks: 'omniauth_callbacks' }
 
+  resources :users do
+    get :edit_email
+    patch :update_email
+  end
+
   root to: "questions#index"
 
   mount ActionCable.server => '/cable'

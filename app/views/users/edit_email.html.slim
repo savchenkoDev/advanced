@@ -1,0 +1,6 @@
+h4 Change your email
+= render 'shared/errors', resource: current_user
+= form_with model: @user, url: user_update_email_path(current_user), method: :patch, local: true do |f|
+  = f.label :email
+  = f.email_field :email
+  = f.submit 'Save email'
