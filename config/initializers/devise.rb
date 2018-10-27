@@ -260,6 +260,9 @@ Devise.setup do |config|
                   Rails.application.secrets.facebook_app_id,
                   Rails.application.secrets.facebook_app_secret,
                   scope: [:email]
+  config.omniauth :vkontakte,
+                  Rails.application.secrets.vkontakte_app_id,
+                  Rails.application.secrets.vkontakte_app_secret
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or
