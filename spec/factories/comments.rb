@@ -1,4 +1,10 @@
 FactoryBot.define do
+  factory :comment, class: Comment do
+    association :commentable, factory: :question
+    text { "Comment text"}
+    user
+  end
+
   factory :question_comment, class: Comment do
     association :commentable, factory: :question
     commentable_type 'Question'

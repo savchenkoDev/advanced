@@ -6,7 +6,9 @@ class QuestionsController < ApplicationController
   before_action :find_question, only: %i[show edit update destroy comment]
   before_action :build_answer, only: :show
   after_action :publish_question, only: %i[create]
-
+  
+  authorize_resource
+  
   respond_to :js, only: :update
 
   def index
