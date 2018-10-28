@@ -1,13 +1,15 @@
 class AnswersController < ApplicationController
   include Voted
   include Commented
-
-  respond_to :js, :json
   
   before_action :authenticate_user!, only: %i[new create]
   before_action :find_question, only: %i[index new create]
   before_action :find_answer, only: %i[update destroy set_best]
   after_action :publish_answer, only: %i[create]
+  
+  authorize_resource
+  
+  respond_to :js, :json
 
   def create
     @answer = @question.answers.build(answer_params)

@@ -73,9 +73,9 @@ RSpec.describe AnswersController, type: :controller do
         expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(user.answers, :count)
       end
 
-      it 'redirect to question/show view' do
+      it 'have http status "Forbidden"' do
         delete :destroy, params: { id: answer }, format: :js
-        expect(response).to render_template :destroy
+        expect(response).to have_http_status(403)
       end
     end
   end
@@ -115,9 +115,9 @@ RSpec.describe AnswersController, type: :controller do
         expect(answer.body).to_not eq 'new_body'
       end
 
-      it 'render "update" template' do
+      it 'have http status "Forbidden"' do
         patch :update, params: { id: answer, question_id: question, answer: attributes_for(:answer) }, format: :js
-        expect(response).to render_template :update
+        expect(response).to have_http_status(403)
       end
     end
   end
@@ -135,9 +135,9 @@ RSpec.describe AnswersController, type: :controller do
         expect{ patch :set_best, params: { id: answer }, format: :js }.to_not change(answer, :best)
       end
 
-      it 'render template "set_best"' do
+      it 'have http status "Forbidden"' do
         patch :set_best, params: { id: answer }, format: :js
-        expect(response).to render_template :set_best
+        expect(response).to have_http_status(403)
       end
     end
 
@@ -153,9 +153,9 @@ RSpec.describe AnswersController, type: :controller do
         expect{ patch :set_best, params: { id: answer }, format: :js }.to_not change(answer, :best)
       end
       
-      it 'render template "set_best"' do
+      it 'have http status "Forbidden"' do
         patch :set_best, params: { id: answer }, format: :js
-        expect(response).to render_template :set_best
+        expect(response).to have_http_status(403)
       end
     end
   end

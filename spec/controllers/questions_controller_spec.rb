@@ -150,9 +150,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: user_question } }.to change(Question, :count).by(-1)
       end
 
-      it 'redirect to index view' do
+      it 'have_http_status "Forbidden"' do
         delete :destroy, params: { id: question }
-        expect(response).to have_http_status(204)
+        expect(response).to have_http_status(403)
       end
     end
 
@@ -165,9 +165,9 @@ RSpec.describe QuestionsController, type: :controller do
         expect { delete :destroy, params: { id: user_question } }.to_not change(Question, :count)
       end
 
-      it 'redirect to index view' do
+      it 'have_http_status "Forbidden"' do
         delete :destroy, params: { id: question }
-        expect(response).to have_http_status(204)
+        expect(response).to have_http_status(403)
       end
     end
   end
