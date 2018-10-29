@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
   respond_to :html
 
   rescue_from CanCan::AccessDenied do |exception|
-    render json: {}, status: :forbidden
+    respond_to do |format|
+      format.html { head :forbidden }
+      format.js { head :forbidden }
+      format.json { head :forbidden }
+    end
   end
 end
