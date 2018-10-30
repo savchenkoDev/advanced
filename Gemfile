@@ -46,6 +46,7 @@ gem 'omniauth', '~> 1.8', '>= 1.8.1'
 gem 'omniauth-facebook', '~> 5.0'
 gem 'omniauth-vkontakte'
 gem 'cancancan'
+gem 'doorkeeper', '4.2.6'
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
@@ -61,6 +62,7 @@ group :test do
   gem 'capybara', '>= 2.15'
   gem 'shoulda-matchers', '~> 3.1', '>= 3.1.1'
   gem 'launchy'
+  gem 'json_spec'
 end
 
 group :test, :development do
