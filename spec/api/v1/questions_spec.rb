@@ -84,7 +84,7 @@ describe 'Questions API' do
       end
 
       context '- contains' do
-        %w[id title body created_at updated_at].each do |attr|
+        %w[id title body user_id created_at updated_at].each do |attr|
           it "- #{attr}" do
             expect(response.body).to be_json_eql(question.send(attr.to_sym).to_json).at_path("#{attr}")
           end
@@ -115,4 +115,46 @@ describe 'Questions API' do
       end
     end
   end
+
+  describe 'POST /create' do
+    let(:user) { create(:user) }
+    let(:access_token) { create(:access_token, resource_owner_id: user.id) }
+    let(:attrs) { attributes_for(:question, user: user) }
+
+    context 'Unauthorized' do
+      it '- returns 401 status if there is no access_token' do
+        get "/api/v1/questions", params: { format: :json }
+        expect(response).to have_http_status(401)
+      end
+
+      it '- returns 401 status if access_token is invalid' do
+        get "/api/v1/questions", params: { access_token: '1234', format: :json }
+        expect(response).to have_http_status(401)
+      end
+    end
+
+    context 'authorized' do
+      before { post "/api/v1/questions", params: { access_token: access_token.token, question: attrs, format: :json } }
+  
+      it '- should be successful' do
+        expect(response).to have_http_status(200)
+      end
+
+      %w[title body user_id created_at updated_at attachments comments].each do |attr|
+        it "- contains #{attr}" do
+          expect(response.body).to have_json_path(attr)
+        end
+      end
+
+      %w[title body].each do |attr|
+        it "- set #{attr}" do
+          expect(response.body).to be_json_eql(attrs[attr.to_sym].to_json).at_path(attr)
+        end
+      end
+
+      it '- set user_id' do
+        expect(response.body).to be_json_eql(user.id.to_json).at_path('user_id')
+      end
+    end
+  end  
 end
