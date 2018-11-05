@@ -102,6 +102,7 @@ describe 'Answers API' do
     let(:user) { create(:user) }
     let(:access_token) { create(:access_token, resource_owner_id: user.id) }
     let(:attrs) { attributes_for(:answer, user: user) }
+    let(:invalid_attrs) { attributes_for(:invalid_answer, user: user) }
 
     context 'Unauthorized' do
       it '- returns 401 status if there is no access_token' do
@@ -115,25 +116,34 @@ describe 'Answers API' do
       end
     end
 
-    context 'authorized' do
-      before { post "/api/v1/questions/#{question.id}/answers", params: { access_token: access_token.token, answer: attrs, format: :json } }
-  
-      it '- should be successful' do
-        expect(response).to have_http_status(200)
-      end
-
-      %w[body user_id created_at updated_at attachments comments].each do |attr|
-        it "- contains #{attr}" do
-          expect(response.body).to have_json_path(attr)
+    context 'Authorized' do
+      context '- invalid  attributes' do
+        it '- returns 422 status' do
+          post "/api/v1/questions/#{question.id}/answers", params: { access_token: access_token.token, answer: invalid_attrs, format: :json }
+          expect(response).to have_http_status(422)
         end
       end
 
-      it "- set body" do
-        expect(response.body).to be_json_eql(attrs[:body].to_json).at_path('body')
-      end
-
-      it '- set user_id' do
-        expect(response.body).to be_json_eql(user.id.to_json).at_path('user_id')
+      context "- valid attributes" do
+        before { post "/api/v1/questions/#{question.id}/answers", params: { access_token: access_token.token, answer: attrs, format: :json } }
+    
+        it '- returns status 201-Created' do
+          expect(response).to have_http_status(201)
+        end
+  
+        %w[body user_id created_at updated_at attachments comments].each do |attr|
+          it "- contains #{attr}" do
+            expect(response.body).to have_json_path(attr)
+          end
+        end
+  
+        it "- set body" do
+          expect(response.body).to be_json_eql(attrs[:body].to_json).at_path('body')
+        end
+  
+        it '- set user_id' do
+          expect(response.body).to be_json_eql(user.id.to_json).at_path('user_id')
+        end
       end
     end
   end  

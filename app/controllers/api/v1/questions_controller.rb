@@ -1,4 +1,6 @@
 class Api::V1::QuestionsController < Api::V1::BaseController
+  authorize_resource
+
   def index
     @questions = Question.all
     respond_with @questions
@@ -11,7 +13,7 @@ class Api::V1::QuestionsController < Api::V1::BaseController
 
   def create
     @question = current_resource_owner.questions.create(question_params)
-    render json: @question, serializer: SingleQuestionSerializer
+    respond_with @question, serializer: SingleQuestionSerializer
   end
 
   private

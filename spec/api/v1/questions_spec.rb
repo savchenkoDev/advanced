@@ -120,6 +120,7 @@ describe 'Questions API' do
     let(:user) { create(:user) }
     let(:access_token) { create(:access_token, resource_owner_id: user.id) }
     let(:attrs) { attributes_for(:question, user: user) }
+    let(:invalid_attrs) { attributes_for(:invalid_question, user: user) }
 
     context 'Unauthorized' do
       it '- returns 401 status if there is no access_token' do
@@ -134,26 +135,35 @@ describe 'Questions API' do
     end
 
     context 'authorized' do
-      before { post "/api/v1/questions", params: { access_token: access_token.token, question: attrs, format: :json } }
+      context '- invalid attributes' do
+        it '- returns 422 status' do
+          post "/api/v1/questions", params: { access_token: access_token.token, question: invalid_attrs, format: :json }
+          expect(response).to have_http_status(422)
+        end
+      end
+
+      context "- valid attributes" do
+        before { post "/api/v1/questions", params: { access_token: access_token.token, question: attrs, format: :json } }
+    
+        it '- returns status 201-Created' do
+          expect(response).to have_http_status(201)
+        end
   
-      it '- should be successful' do
-        expect(response).to have_http_status(200)
-      end
-
-      %w[title body user_id created_at updated_at attachments comments].each do |attr|
-        it "- contains #{attr}" do
-          expect(response.body).to have_json_path(attr)
+        %w[title body user_id created_at updated_at attachments comments].each do |attr|
+          it "- contains #{attr}" do
+            expect(response.body).to have_json_path(attr)
+          end
         end
-      end
-
-      %w[title body].each do |attr|
-        it "- set #{attr}" do
-          expect(response.body).to be_json_eql(attrs[attr.to_sym].to_json).at_path(attr)
+  
+        %w[title body].each do |attr|
+          it "- set #{attr}" do
+            expect(response.body).to be_json_eql(attrs[attr.to_sym].to_json).at_path(attr)
+          end
         end
-      end
-
-      it '- set user_id' do
-        expect(response.body).to be_json_eql(user.id.to_json).at_path('user_id')
+  
+        it '- set user_id' do
+          expect(response.body).to be_json_eql(user.id.to_json).at_path('user_id')
+        end
       end
     end
   end  

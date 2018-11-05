@@ -1,4 +1,5 @@
 class Api::V1::AnswersController < Api::V1::BaseController
+  authorize_resource
   before_action :find_question, only: %i[index create]
 
   def index
@@ -15,7 +16,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
     @answer = @question.answers.new(answer_params)
     @answer.user = current_resource_owner
     @answer.save
-    render json: @answer, serializer: SingleAnswerSerializer
+    respond_with @answer, serializer: SingleAnswerSerializer
   end
   
   private
