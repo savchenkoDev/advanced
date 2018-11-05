@@ -42,11 +42,15 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'carrierwave'
 gem 'remotipart'
 gem 'cocoon'
+gem "loofah", ">= 2.2.3"
 gem 'omniauth', '~> 1.8', '>= 1.8.1'
 gem 'omniauth-facebook', '~> 5.0'
 gem 'omniauth-vkontakte'
 gem 'cancancan'
 gem 'doorkeeper', '4.2.6'
+gem 'active_model_serializers'
+gem 'oj'
+gem 'oj_mimic_json'
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
