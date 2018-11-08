@@ -8,9 +8,14 @@ class Question < ApplicationRecord
 
   validates :title, :body, presence: true, length: { minimum: 6 }
 
-  after_create :calculate_reputation
+  after_create :update_reputation
 
   private
+
+  def update_reputation
+    self.delay.calculate_reputation
+  end
+  
 
   def calculate_reputation
     reputation = Reputation.calculate(self)
