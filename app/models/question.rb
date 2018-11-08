@@ -10,6 +10,11 @@ class Question < ApplicationRecord
 
   after_create :update_reputation
 
+  def calculate_reputation
+    reputation = Reputation.calculate(self)
+    self.user.update(reputation: reputation)
+  end
+
   private
 
   def update_reputation
@@ -17,8 +22,4 @@ class Question < ApplicationRecord
   end
   
 
-  def calculate_reputation
-    reputation = Reputation.calculate(self)
-    self.user.update(reputation: reputation)
-  end
 end

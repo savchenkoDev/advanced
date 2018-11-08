@@ -10,6 +10,13 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:facebook, :vkontakte]
 
+  def self.send_daily_digest
+    find_each.each do |user|
+      DailyMailer.delay.digest(user)
+    end
+  end
+  
+  
   def self.find_for_oauth(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
