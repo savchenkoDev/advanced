@@ -51,6 +51,7 @@ gem 'doorkeeper', '4.2.6'
 gem 'active_model_serializers'
 gem 'oj'
 gem 'oj_mimic_json'
+gem 'delayed_job_active_record'
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
