@@ -31,19 +31,7 @@ RSpec.describe Answer, type: :model do
     end
   end
 
-  describe 'reputation' do
-    let(:user) { create(:user) }
-    let(:question) { create(:question) }
-    subject { build(:answer, user: user, question: question) }
-    it ' -should calculate reputation after create' do
-      expect(Reputation).to receive(:calculate).with(subject)
-      subject.save!
-    end
-    
-    it '- should not calculate reputation after create' do
-      subject.save!
-      expect(Reputation).to_not receive(:calculate)
-      subject.update(body: 'New body')
-    end
+  context "reputation" do
+    it_behaves_like 'calculates reputation'
   end
 end

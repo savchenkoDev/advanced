@@ -23,18 +23,6 @@ RSpec.describe Question, type: :model do
   it { should accept_nested_attributes_for :attachments }
 
   context "reputation" do
-    let(:user) { create(:user) }
-    subject { build(:question, user: user) }
-    
-    it ' -should calculate reputation after create' do
-      expect(Reputation).to receive(:calculate).with(subject)
-      subject.save!
-    end
-  
-    it '- should not calculate reputation after create' do
-      subject.save!
-      expect(Reputation).to_not receive(:calculate)
-      subject.update(title: 'New title')
-    end
+    it_behaves_like 'calculates reputation'
   end
 end
