@@ -3,8 +3,10 @@ class Question < ApplicationRecord
   include Attachable
   include Commentable
 
-  has_many :answers, dependent: :destroy
   belongs_to :user
+  has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :subscribers, through: :subscriptions, source: :user
 
   validates :title, :body, presence: true, length: { minimum: 6 }
 

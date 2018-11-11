@@ -10,9 +10,11 @@ RSpec.describe Question, type: :model do
   end
 
   describe 'asoociations' do
+    it { should belong_to(:user) }
     it { should have_many(:answers).dependent(:destroy) }
     it { should have_many(:attachments) }
-    it { should belong_to(:user) }
+    it { should have_many(:subscriptions).dependent(:destroy) }
+    it { should have_many(:subscribers).through(:subscriptions) } 
   end
   
   describe 'validations' do
