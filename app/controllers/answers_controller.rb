@@ -6,6 +6,7 @@ class AnswersController < ApplicationController
   before_action :find_question, only: %i[index new create]
   before_action :find_answer, only: %i[update destroy set_best]
   after_action :publish_answer, only: %i[create]
+  after_action :send_notify, only: %i[create]
   
   authorize_resource
   
@@ -32,6 +33,11 @@ class AnswersController < ApplicationController
   end
 
   private
+
+  def send_notification
+    NewAnswerNotificationMailer.question_author_notification(@answer).deliver_later
+  end
+  
   
   def find_question
     @question = Question.find(params[:question_id])
@@ -43,7 +49,6 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    Rails.logger.info(@answer.attachments.each {|a| a})
     ActionCable.server.broadcast "answers-for-question-#{@answer.question_id}", 
       {
         answer: @answer,
@@ -52,6 +57,11 @@ class AnswersController < ApplicationController
         question_author: @answer.question.user_id
       }
   end
+
+  def send_notify
+    NewAnswerNotificationMailer.question_author_notification(@answer).deliver_later    
+  end
+  
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:file, :destroy])
