@@ -6,6 +6,8 @@ RSpec.describe User do
     it { should have_many(:answers) }
     it { should have_many(:votes) }
     it { should have_many(:comments) }
+    it { should have_many(:subscriptions).dependent(:destroy) }
+    it { should have_many(:subscribed_question).through(:subscriptions) } 
   end
   
   describe 'validations' do
