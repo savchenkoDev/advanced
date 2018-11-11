@@ -34,11 +34,6 @@ class AnswersController < ApplicationController
 
   private
 
-  def send_notification
-    NewAnswerNotificationMailer.question_author_notification(@answer).deliver_later
-  end
-  
-  
   def find_question
     @question = Question.find(params[:question_id])
   end
@@ -59,7 +54,7 @@ class AnswersController < ApplicationController
   end
 
   def send_notify
-    NewAnswerNotificationMailer.question_author_notification(@answer).deliver_later    
+    NewAnswerNotificationMailer.subscribers_notification(@answer).deliver_later
   end
   
 

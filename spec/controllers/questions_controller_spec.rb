@@ -65,7 +65,12 @@ RSpec.describe QuestionsController, type: :controller do
       it 'link new Question with current user' do
         expect { post :create, params: { question: attributes_for(:question) } }.to change(user.questions, :count).by(1)
       end
-
+      
+      it 'create new Subscription for current user' do
+        post :create, params: { question: attributes_for(:question) }
+        expect { post :create, params: { question: attributes_for(:question) } }.to change(user.subscriptions, :count).by(1)
+      end
+      
       it 'redirect to "show" template' do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to question_path(assigns(:question))
