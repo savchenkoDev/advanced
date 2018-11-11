@@ -49,4 +49,8 @@ class User < ApplicationRecord
   def voted?(entity)
     entity.votes.where(user_id: self.id).exists?
   end
+
+  def subscribe?(entity)
+    entity.subscriptions.where(user_id: self.id).exists?
+  end
 end

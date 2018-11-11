@@ -21,6 +21,7 @@ RSpec.describe User do
     let!(:user_question) { create(:question, user: user) }
     let!(:question) { create(:question) }
     let!(:vote) { create(:vote, user: user, votable: question) }
+  
     describe '#author_of?' do
       it 'is author of entity' do
         expect(user).to be_author_of(user_question)
@@ -54,6 +55,19 @@ RSpec.describe User do
   
       it "- user havn't temp email" do
         expect(user.temp_email?).to be_falsey
+      end
+    end
+
+    describe "#subscribe?" do
+      let(:subscription) { create(:subscription, user: user, question: question) }
+
+      it 'be falsey if user does not have subscription to question' do
+        expect(user).to_not be_subscribe(question)
+      end
+  
+      it 'be truthy if user have subscription to question' do
+        subscription
+        expect(user).to be_subscribe(question)
       end
     end
   end
