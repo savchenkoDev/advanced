@@ -11,10 +11,15 @@ class Question < ApplicationRecord
   validates :title, :body, presence: true, length: { minimum: 6 }
 
   after_create :calculate_reputation
+  after_create :create_subscription_for_author
 
   private
   
   def calculate_reputation
     CalculateReputationJob.perform_later(self)
+  end
+
+  def create_subscription_for_author
+    self.subscriptions.create(user_id: self.user.id)
   end
 end

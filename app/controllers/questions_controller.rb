@@ -28,7 +28,6 @@ class QuestionsController < ApplicationController
 
   def create
     @question = current_user.questions.create(question_params)
-    create_subscription_for_author if @question.persisted?
     respond_with @question
   end
 
@@ -42,11 +41,6 @@ class QuestionsController < ApplicationController
   end
 
   private
-
-  def create_subscription_for_author
-    @subscription = @question.subscriptions.create(user_id: current_user.id)
-  end
-  
 
   def publish_question
     return if @question.errors.any?

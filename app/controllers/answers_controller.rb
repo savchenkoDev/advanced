@@ -6,7 +6,6 @@ class AnswersController < ApplicationController
   before_action :find_question, only: %i[index new create]
   before_action :find_answer, only: %i[update destroy set_best]
   after_action :publish_answer, only: %i[create]
-  after_action :send_notify, only: %i[create]
   
   authorize_resource
   
@@ -16,6 +15,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     @answer.save
+    respond_with @answer
   end
 
   def update
@@ -52,11 +52,6 @@ class AnswersController < ApplicationController
         question_author: @answer.question.user_id
       }
   end
-
-  def send_notify
-    NewAnswerNotificationMailer.subscribers_notification(@answer).deliver_later
-  end
-  
 
   def answer_params
     params.require(:answer).permit(:body, attachments_attributes: [:file, :destroy])
