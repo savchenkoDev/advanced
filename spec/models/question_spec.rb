@@ -27,4 +27,12 @@ RSpec.describe Question, type: :model do
   context "reputation" do
     it_behaves_like 'calculates reputation'
   end
+
+  context 'subscription' do
+    let!(:question) { create(:question) } 
+
+    it 'after create add subscribe for author' do
+      expect(question.subscribers.count).to eq 1
+    end
+  end
 end

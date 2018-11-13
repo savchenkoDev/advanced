@@ -20,6 +20,6 @@ class Question < ApplicationRecord
   end
 
   def create_subscription_for_author
-    self.subscriptions.create(user_id: self.user.id)
+    subscriptions.create(user_id: self.user.id)
   end
 end
