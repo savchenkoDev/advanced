@@ -12,7 +12,7 @@ class SubscriptionsController < ApplicationController
 
   def destroy
     @subscription = Subscription.find(params[:id])
-    respond_to @subscription.destroy
+    @subscription.destroy if current_user.author_of?(@subscription)
   end
   
 end
