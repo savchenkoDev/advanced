@@ -51,6 +51,6 @@ class User < ApplicationRecord
   end
 
   def subscribe?(entity)
-    entity.subscriptions.where(user_id: self.id).exists?
+    subscriptions.where(question_id: entity.id).exists?
   end
 end
