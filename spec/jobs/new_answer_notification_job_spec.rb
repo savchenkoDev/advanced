@@ -8,7 +8,7 @@ RSpec.describe NewAnswerNotificationJob, type: :job do
   it "send notification to question's subs" do
     question.subscribers.each do |user|
       expect(NewAnswerNotificationMailer).to receive(:subscribers_notification).with(answer, user).and_call_original
-      NewAnswerNotificationJob.perform_now(answer)
     end
+    NewAnswerNotificationJob.perform_now(answer)
   end
 end

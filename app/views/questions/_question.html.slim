@@ -8,16 +8,16 @@
         div class="attachment-#{attachment.id}"
           = link_to attachment.file.identifier, attachment.file.url
           br
-          -if current_user.author_of?(@question)
+          -if current_user&.author_of?(@question)
             = link_to  "delete", attachment_path(attachment), method: :delete, remote: true
   = render 'shared/votes', resource: @question
   .subscription
     -if user_signed_in?
-      -if current_user.subscribe?(@question)
+      -if current_user&.subscribe?(@question)
         p= link_to  "Unsubscribe", subscription_path(@subscription), method: :delete, remote: true
       -else
         p= link_to  "Subscribe", question_subscriptions_path(@question), method: :post, remote: true
-  -if user_signed_in? && current_user.author_of?(@question)
+  -if current_user&.author_of?(@question)
     p= link_to 'Delete question', question_path(@question),
             method: :delete, class: 'btn btn-secondary'
     p= link_to  "Edit question", '', class: 'edit-question-link'

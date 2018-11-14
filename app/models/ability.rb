@@ -26,7 +26,8 @@ class Ability
     can [:update, :destroy], [Question, Answer], user_id: @user.id
     can :create_comment, [Question, Answer]
     can :destroy, Attachment, attachable: { user_id: user.id }
-    can :manage, Subscription, user_id: user.id
+    can :create, Subscription
+    can :destroy, Subscription, user_id: user.id
     can_manage_votes
 
     can :set_best, Answer do |answer|

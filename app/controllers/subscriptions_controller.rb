@@ -6,7 +6,7 @@ class SubscriptionsController < ApplicationController
 
   def create
     @question = Question.find(params[:question_id])
-    @subscription = @question.subscriptions.create!(user: current_user)
+    @subscription = @question.subscriptions.create(user: current_user)
     respond_with @subscription
   end
 

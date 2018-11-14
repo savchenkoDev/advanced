@@ -14,12 +14,12 @@ class Question < ApplicationRecord
   after_create :create_subscription_for_author
 
   private
-  
+
   def calculate_reputation
     CalculateReputationJob.perform_later(self)
   end
 
   def create_subscription_for_author
-    subscriptions.create(user_id: self.user.id)
+    subscriptions.create(user: user)
   end
 end

@@ -45,12 +45,12 @@ class User < ApplicationRecord
   def vote(entity)
     self.votes.where(votable: entity).first
   end
-  
+
   def voted?(entity)
-    entity.votes.where(user_id: self.id).exists?
+    votes.where(votable: entity).exists?
   end
 
   def subscribe?(entity)
-    subscriptions.where(question_id: entity.id).exists?
+    subscriptions.where(question: entity).exists?
   end
 end
