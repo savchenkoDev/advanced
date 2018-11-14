@@ -3,17 +3,23 @@ class Question < ApplicationRecord
   include Attachable
   include Commentable
 
-  has_many :answers, dependent: :destroy
   belongs_to :user
+  has_many :answers, dependent: :destroy
+  has_many :subscriptions, dependent: :destroy
+  has_many :subscribers, through: :subscriptions, source: :user
 
   validates :title, :body, presence: true, length: { minimum: 6 }
 
   after_create :calculate_reputation
+  after_create :create_subscription_for_author
 
   private
 
   def calculate_reputation
-    reputation = Reputation.calculate(self)
-    self.user.update(reputation: reputation)
+    CalculateReputationJob.perform_later(self)
+  end
+
+  def create_subscription_for_author
+    subscriptions.create(user: user)
   end
 end

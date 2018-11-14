@@ -15,6 +15,7 @@ class AnswersController < ApplicationController
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
     @answer.save
+    respond_with @answer
   end
 
   def update
@@ -32,7 +33,7 @@ class AnswersController < ApplicationController
   end
 
   private
-  
+
   def find_question
     @question = Question.find(params[:question_id])
   end
@@ -43,7 +44,6 @@ class AnswersController < ApplicationController
 
   def publish_answer
     return if @answer.errors.any?
-    Rails.logger.info(@answer.attachments.each {|a| a})
     ActionCable.server.broadcast "answers-for-question-#{@answer.question_id}", 
       {
         answer: @answer,

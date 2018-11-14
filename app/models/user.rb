@@ -4,12 +4,21 @@ class User < ApplicationRecord
   has_many :votes
   has_many :comments
   has_many :authorizations
+  has_many :subscriptions, dependent: :destroy
+  has_many :subscribed_question, through: :subscriptions, source: :question
   
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :omniauthable, omniauth_providers: [:facebook, :vkontakte]
 
+  def self.send_daily_digest
+    find_each.each do |user|
+      DailyMailer.digest(user).deliver_later
+    end
+  end
+  
+  
   def self.find_for_oauth(auth)
     authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
     return authorization.user if authorization
@@ -36,8 +45,12 @@ class User < ApplicationRecord
   def vote(entity)
     self.votes.where(votable: entity).first
   end
-  
+
   def voted?(entity)
-    entity.votes.where(user_id: self.id).exists?
+    votes.where(votable: entity).exists?
+  end
+
+  def subscribe?(entity)
+    subscriptions.where(question: entity).exists?
   end
 end

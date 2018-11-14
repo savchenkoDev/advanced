@@ -30,5 +30,8 @@ RSpec.describe Answer, type: :model do
       expect(question.answers.where(best: true).count).to eq 1
     end
   end
-  
+
+  context "reputation" do
+    it_behaves_like 'calculates reputation'
+  end
 end

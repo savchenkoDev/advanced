@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user!, only: %i[new create show]
   before_action :find_question, only: %i[show edit update destroy comment]
   before_action :build_answer, only: :show
-  after_action :publish_question, only: %i[create]
+  after_action :publish_question, only: :create
   
   authorize_resource
   
@@ -16,6 +16,7 @@ class QuestionsController < ApplicationController
   end
 
   def show
+    @subscription = @question.subscriptions.where(user_id: current_user.id).first
     respond_with @question
   end
 
@@ -26,7 +27,8 @@ class QuestionsController < ApplicationController
   def edit; end
 
   def create
-    respond_with @question = current_user.questions.create(question_params)
+    @question = current_user.questions.create(question_params)
+    respond_with @question
   end
 
   def update
