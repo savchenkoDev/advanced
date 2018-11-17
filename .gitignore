@@ -32,3 +32,7 @@
 
 # Ignore rubocop config
 .rubocop.yml
+
+# Ignore Sphinx files 
+config/*.sphinx.conf
+db/sphinx
