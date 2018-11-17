@@ -1,0 +1,11 @@
+p = link_to  "Back", questions_path
+.form
+  = render 'form'
+h2 Search results
+.results
+  -if @results.present?
+    ul
+      - @results.each do |result|
+        li = render_result(result)
+  -else
+    p No results

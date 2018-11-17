@@ -1,0 +1,4 @@
+= form_for :search, url: search_path, method: :get do |f|
+    = f.text_field :query
+    = f.select :resource, Search::RESOURCES, { include_blank: 'All' }
+    = f.submit 'Search'
