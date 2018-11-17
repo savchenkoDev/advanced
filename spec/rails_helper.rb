@@ -67,7 +67,24 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
   config.include(OmniauthMacros)
+
+  config.before :each do |example|
+    if example.metadata[:type] == :request
+      ThinkingSphinx::Test.init
+      ThinkingSphinx::Test.start index: false
+    end
+
+    ThinkingSphinx::Configuration.instance.settings['real_time_callbacks'] = (example.metadata[:type] == :request)
+  end
+
+  config.after(:each) do |example|
+    if example.metadata[:type] == :request
+      ThinkingSphinx::Test.stop
+      ThinkingSphinx::Test.clear
+    end
+  end
 end
+
 
 OmniAuth.config.test_mode = true
 
