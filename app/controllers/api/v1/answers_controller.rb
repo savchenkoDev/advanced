@@ -4,7 +4,7 @@ class Api::V1::AnswersController < Api::V1::BaseController
 
   def index
     @answers = @question.answers
-    respond_with @answers
+    respond_with @answers.order(:id)
   end
 
   def show

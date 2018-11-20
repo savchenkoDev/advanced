@@ -40,9 +40,6 @@ RSpec.describe Ability, type: :model do
   
       it { should be_able_to :update, create(:answer, user: user), user: user }
       it { should_not be_able_to :update, create(:answer, user: other), user: user }
-      
-      it { should be_able_to :update, create(:subscription, user: user), user: user }
-      it { should_not be_able_to :update, create(:subscription, user: other), user: user }
     end
 
     describe '- destroy' do

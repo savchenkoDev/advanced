@@ -30,11 +30,9 @@ $ ->
   questionId = $('.question').data('id')
   App.cable.subscriptions.create('CommentsChannel', {
     connected: ->
-      console.log('Question comments connected.')
       @perform 'follow_question', {id: questionId}
     ,
     received: (data) ->
-      console.log(data)
       object = JSON.parse(data)
       $('.question-' + object.id + '-comments-list').append('<li class="comment-'+object.comment.id+'">'+object.comment.text+'</li>')
   })

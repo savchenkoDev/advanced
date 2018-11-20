@@ -24,7 +24,7 @@ feature 'Question editing', %q{
       expect(page).to have_link 'Edit question'
     end
 
-    scenario 'try to edit his answer', js: true do
+    scenario 'try to edit his question', js: true do
       click_on 'Edit question'
       within '.question' do
         fill_in "New title",	with: "New question title"

@@ -44,7 +44,6 @@ feature 'Subscription to question', %q{
 
       scenario 'as does not subscription author', js: true do
         visit question_path(question_no_subs)
-        save_and_open_page
         expect(page).to_not have_link 'Unsubscribe'
       end
     end
