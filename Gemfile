@@ -55,6 +55,8 @@ gem 'sidekiq'
 gem 'sidetiq'
 gem 'whenever'
 gem 'sinatra', '>= 1.3.0', require: nil
+gem 'dotenv'
+gem 'dotenv-deployment', require: 'dotenv/deployment'
 
 gem 'thinking-sphinx'
 gem 'mysql2'
