@@ -1,6 +1,5 @@
-- cache comment do
-  div class="#{resource_name(resource)}-comment-form"
-    div class="#{resource_name(resource)}-#{resource.id}-comment-errors"
+div class="#{resource_name(resource)}-comment-form"
+  div class="#{resource_name(resource)}-#{resource.id}-comment-errors"
     = form_with model: [resource], url: polymorphic_path([:create_comment, resource]), method: :post, remote: true, data: {type: :json} do |f| 
       = f.label :text
       = f.text_area :text
