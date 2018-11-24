@@ -4,6 +4,7 @@ h1 All questions
   = render 'search/form'
 p= link_to  'Ask question', new_question_path
 ul.questions-list
-  - @questions.each do |question|
-    = render 'collection_item', question: question
-  end
+  - cache collection_cache_key_for :question do  
+    - @questions.each do |question|
+      = render 'collection_item', question: question
+    end

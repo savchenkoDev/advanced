@@ -1,8 +1,9 @@
-= render @question
-= render 'comments/comments_list', resource: @question
+- cache @question do
+  = render @question
+  = render 'comments/comments_list', resource: @question
 
-h4 All answers
-.answers
-  = render @question.answers.by_best
-.errors
-= render 'answers/form'
+  h4 All answers
+  .answers
+    = render @question.answers.by_best
+  .errors
+  = render 'answers/form'
