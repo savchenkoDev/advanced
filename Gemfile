@@ -64,6 +64,7 @@ gem 'mysql2'
 # or gem install mysql2 --  --with-mysql-dir=/usr/local/opt/mysql@5.6
 gem 'passenger'
 gem 'unicorn'
+gem 'redis-rails'
 
 group :development do
   # Access an interactive console on exception pages or by calling 'console' anywhere in the code.
