@@ -8,6 +8,9 @@ Bundler.require(*Rails.groups)
 
 module Advanced
   class Application < Rails::Application
+    # Use Redis for caching
+    config.cache_store = :redis_store, 'redis://localhost:6379/0/cache', { expires_in: 90.minutes }
+
     # Use the responders controller from the responders gem
     config.app_generators.scaffold_controller :responders_controller
 
